@@ -61,10 +61,47 @@ Design source: [Magnite Prototype Wireframes canvas](https://claude.ai/artifact/
 - Layout: 64px app rail, 232px sidebar, fluid main column at 1440px wide. Tables scroll horizontally below 1040px.
 - Real `<button>`, `<a>`, `<input>` and `<label>` elements throughout, with `aria-label` on icon-only controls.
 
+## Running the mock data app
+
+Next.js 15 with Prisma 6 on SQLite. No external services or credentials are needed.
+
+```
+npm install          # also generates the Prisma client
+npm run db:reset     # creates prisma/dev.db and loads the dummy rows
+npm run dev          # http://localhost:3000
+```
+
+The home page shows a tile per table with its row count. Each tile opens a plain table view of every row and column, including joined account and product names. `npm run db:studio` opens Prisma Studio for editing rows directly.
+
+Other scripts: `db:push` applies schema changes without reseeding, `db:seed` reloads rows only, `typecheck` runs the TypeScript compiler.
+
+## Data model
+
+Seven Salesforce-shaped tables in `prisma/schema.prisma`. SQLite has no enums, so closed sets are strings and the accepted values are listed in a comment above each field.
+
+| Table | Rows seeded | Key fields | Relations |
+| --- | --- | --- | --- |
+| Account | 11 | type, region, country, ownerName, magniteLinkActive, streamingLastActiveAt, lastContactedAt, revenueRank | has many Contact, Opportunity, MagniteContract, Case |
+| Contact | 14 | email, title, consentOptIn, isPrimary, lastContactedAt, duplicateOfId | belongs to Account; self-relation for duplicates |
+| Lead | 6 | status, source, consentOptIn, convertedAccountId, convertedContactId | optional link to Account and Contact once converted |
+| MagniteProduct | 6 | code, name, family | has many Opportunity, MagniteContract |
+| Opportunity | 8 | stage, amountUsd, closeDate, probability, renewalRisk | belongs to Account, optional MagniteProduct |
+| MagniteContract | 10 | contractNumber, status, startDate, endDate, feePercent, msaVersion, dpaSigned, seatId | belongs to Account and MagniteProduct |
+| Case | 14 | caseNumber, subject, intent, queue, confidence, status, routingMode, receivedAt, routedAt | optional Account and Contact |
+
+The seed in `prisma/seed.ts` uses the same accounts, contacts, cases and numbers that appear on the wireframes, so the data browser and the designs agree. It includes a deliberate duplicate contact pair, a contract whose fee does not match the account's case, and two unrouted cases in the support inbox.
+
 ## Repository layout
 
 ```
 README.md
+package.json           Next.js app scripts, Prisma seed hook
+prisma/
+  schema.prisma        the seven mock tables
+  seed.ts              dummy rows matching the wireframes
+src/
+  app/                 data browser: overview and one page per table
+  lib/                 Prisma client and table registry
 wireframes/
   README.md              screen-by-screen notes and open questions
   images/                PNG renders of each screen at 2x (1440px wide)
@@ -74,4 +111,4 @@ wireframes/
 
 ## Status
 
-Wireframes only. No application code yet. See [`wireframes/README.md`](wireframes/README.md) for the screen inventory and open questions before implementation starts.
+Wireframes plus a seeded mock database with a read-only browser. The prototype screens themselves are not built yet. See [`wireframes/README.md`](wireframes/README.md) for the screen inventory and open questions.

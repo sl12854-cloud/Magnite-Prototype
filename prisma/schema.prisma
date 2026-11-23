@@ -1,0 +1,177 @@
+// Mock Salesforce-shaped data model for the Magnite Mandala prototypes.
+// SQLite has no enums, so closed sets are strings; accepted values are
+// listed in a comment above each field.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Account {
+  id                    String           @id @default(cuid())
+  name                  String
+  /// Publisher | Demand | Agency | Internal
+  type                  String
+  /// NA | EMEA | APAC | JP
+  region                String
+  country               String
+  industry              String?
+  website               String?
+  ownerName             String
+  magniteLinkActive     Boolean          @default(false)
+  streamingLastActiveAt DateTime?
+  lastContactedAt       DateTime?
+  /// 1 = highest revenue. Top 40 are "premium publishers".
+  revenueRank           Int?
+  annualRevenueUsd      Int?
+  createdAt             DateTime         @default(now())
+  updatedAt             DateTime         @updatedAt
+
+  contacts      Contact[]
+  opportunities Opportunity[]
+  contracts     MagniteContract[]
+  cases         Case[]
+  leads         Lead[]
+}
+
+model Contact {
+  id              String    @id @default(cuid())
+  accountId       String
+  account         Account   @relation(fields: [accountId], references: [id])
+  firstName       String
+  lastName        String
+  /// Not unique on purpose: duplicate contacts are part of the demo data.
+  email           String
+  title           String?
+  country         String?
+  consentOptIn    Boolean   @default(false)
+  isPrimary       Boolean   @default(false)
+  lastContactedAt DateTime?
+  /// Set when this row is a suspected duplicate of another contact.
+  duplicateOfId   String?
+  duplicateOf     Contact?  @relation("ContactDuplicates", fields: [duplicateOfId], references: [id])
+  duplicates      Contact[] @relation("ContactDuplicates")
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  cases Case[]
+  leads Lead[]
+
+  @@index([accountId])
+  @@index([email])
+}
+
+model Lead {
+  id                 String   @id @default(cuid())
+  firstName          String
+  lastName           String
+  email              String
+  company            String
+  title              String?
+  /// New | Working | Qualified | Unqualified | Converted
+  status             String   @default("New")
+  /// Webinar | Inbound email | Referral | Event | Website
+  source             String
+  country            String?
+  consentOptIn       Boolean  @default(false)
+  convertedAccountId String?
+  convertedAccount   Account? @relation(fields: [convertedAccountId], references: [id])
+  convertedContactId String?
+  convertedContact   Contact? @relation(fields: [convertedContactId], references: [id])
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+model MagniteProduct {
+  id          String   @id @default(cuid())
+  /// Short stable key, e.g. SPRINGSERVE, DVPLUS, CLEARLINE, LINK, STREAMING, CURATION
+  code        String   @unique
+  name        String
+  /// SSP | Ad server | Curation | Buyer platform | Identity
+  family      String
+  description String?
+  createdAt   DateTime @default(now())
+
+  opportunities Opportunity[]
+  contracts     MagniteContract[]
+}
+
+model Opportunity {
+  id          String          @id @default(cuid())
+  accountId   String
+  account     Account         @relation(fields: [accountId], references: [id])
+  name        String
+  /// Prospecting | Qualification | Proposal | Negotiation | Closed Won | Closed Lost
+  stage       String
+  amountUsd   Int
+  closeDate   DateTime
+  /// 0-100
+  probability Int
+  productId   String?
+  product     MagniteProduct? @relation(fields: [productId], references: [id])
+  /// Low | Medium | High (the picklist requested in case A1 row 9)
+  renewalRisk String?
+  ownerName   String
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@index([accountId])
+}
+
+model MagniteContract {
+  id             String         @id @default(cuid())
+  contractNumber String         @unique
+  accountId      String
+  account        Account        @relation(fields: [accountId], references: [id])
+  productId      String
+  product        MagniteProduct @relation(fields: [productId], references: [id])
+  /// Active | Pending signature | In termination | Expired
+  status         String
+  startDate      DateTime
+  endDate        DateTime?
+  /// Platform fee as a percentage, e.g. 12.0
+  feePercent     Float?
+  msaVersion     String?
+  dpaSigned      Boolean        @default(false)
+  seatId         String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  @@index([accountId])
+}
+
+model Case {
+  id          String    @id @default(cuid())
+  caseNumber  String    @unique
+  subject     String
+  /// Intent detected by the router, e.g. "Deal activation check"
+  intent      String?
+  description String?
+  fromEmail   String
+  accountId   String?
+  account     Account?  @relation(fields: [accountId], references: [id])
+  contactId   String?
+  contact     Contact?  @relation(fields: [contactId], references: [id])
+  /// support@ inbox (unrouted) | CTV Tech Ops | SpringServe Support | DV+ Support |
+  /// Salesforce Ops | Billing & Finance | Legal & Contracts | Client Services | Needs review
+  queue       String
+  /// 0-100, null until routed
+  confidence  Int?
+  /// New | Assigned | In progress | Waiting on client | Needs review | Closed
+  status      String    @default("New")
+  ownerName   String?
+  /// ai | rules | manual
+  routingMode String?
+  receivedAt  DateTime
+  routedAt    DateTime?
+  closedAt    DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([queue, status])
+  @@index([accountId])
+}
