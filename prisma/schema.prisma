@@ -3,7 +3,13 @@
 // listed in a comment above each field.
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  // The Rust query engine is downloaded from binaries.prisma.sh, which is not
+  // reachable from the sandboxes this project is built in. The WebAssembly
+  // engine ships inside the npm package instead, so it needs no download and
+  // behaves identically for SQLite.
+  engineType      = "client"
+  previewFeatures = ["driverAdapters", "queryCompiler"]
 }
 
 datasource db {
@@ -166,12 +172,41 @@ model Case {
   ownerName   String?
   /// ai | rules | manual
   routingMode String?
-  receivedAt  DateTime
-  routedAt    DateTime?
-  closedAt    DateTime?
+  /// Queue the router picked on first pass, before any human correction.
+  /// "Needs review" here means the case was never auto-routed.
+  initialQueue String?
+  /// Why the router chose this queue. Shown in the A1 row menu.
+  routingReason String?
+  /// Size of the original email and its attachments. Summed for the
+  /// "kept out of Salesforce" tile on A2.
+  attachmentBytes Int       @default(0)
+  receivedAt      DateTime
+  routedAt        DateTime?
+  assignedAt      DateTime?
+  closedAt        DateTime?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
+  corrections CaseCorrection[]
+
   @@index([queue, status])
   @@index([accountId])
+  @@index([receivedAt])
+}
+
+/// One human move of a case from one queue to another. The count of these
+/// rows is what makes routing accuracy less than 100%: a case that was never
+/// corrected is treated as correctly routed.
+model CaseCorrection {
+  id          String   @id @default(cuid())
+  caseId      String
+  case        Case     @relation(fields: [caseId], references: [id])
+  fromQueue   String
+  toQueue     String
+  correctedBy String
+  reason      String?
+  createdAt   DateTime @default(now())
+
+  @@index([caseId])
+  @@index([createdAt])
 }

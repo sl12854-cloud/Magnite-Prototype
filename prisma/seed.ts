@@ -4,6 +4,7 @@
  * reloads every table.
  */
 import { PrismaClient } from "@prisma/client";
+import { seedVolume } from "./volume";
 
 const prisma = new PrismaClient();
 
@@ -14,6 +15,7 @@ const at = (iso: string) => new Date(iso);
 
 async function main() {
   // Order matters because of foreign keys.
+  await prisma.caseCorrection.deleteMany();
   await prisma.case.deleteMany();
   await prisma.lead.deleteMany();
   await prisma.opportunity.deleteMany();
@@ -153,10 +155,21 @@ async function main() {
         accountId: acc(account),
         contactId: contact(rest.fromEmail),
         routingMode: routed ? "ai" : undefined,
+        // Provenance for the A2 metrics: a case below the 70% threshold was
+        // never auto-routed, so its first queue was Needs review.
+        initialQueue: routed ? (rest.confidence! >= 70 ? rest.queue : "Needs review") : undefined,
+        attachmentBytes: 1_400_000 + ((rest.caseNumber.charCodeAt(4) * 7919) % 2_600_000),
         routedAt: routed ? new Date(rest.receivedAt.getTime() + 4 * 60 * 1000) : undefined,
+        assignedAt:
+          routed && rest.ownerName
+            ? new Date(rest.receivedAt.getTime() + 11 * 60 * 1000)
+            : undefined,
       },
     });
   }
+
+  // ------------------------------------------------- Volume history for A2
+  const volume = await seedVolume(prisma);
 
   const counts = {
     accounts: await prisma.account.count(),
@@ -166,8 +179,9 @@ async function main() {
     opportunities: await prisma.opportunity.count(),
     contracts: await prisma.magniteContract.count(),
     cases: await prisma.case.count(),
+    corrections: await prisma.caseCorrection.count(),
   };
-  console.log("Seeded:", counts);
+  console.log("Seeded:", counts, "(volume:", volume, ")");
 }
 
 main()
