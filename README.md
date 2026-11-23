@@ -65,24 +65,34 @@ Design source: [Magnite Prototype Wireframes canvas](https://claude.ai/artifact/
 
 Next.js 15 with Prisma 6 on Postgres, hosted on Supabase. The only credential is the database connection string.
 
-1. Copy `.env.example` to `.env` and paste the two connection strings from the Supabase dashboard under Project Settings, Database. `DATABASE_URL` is the transaction pooler on port 6543 and `DIRECT_URL` is the direct connection on port 5432. `.env` is git-ignored.
+1. Get the two connection strings into a git-ignored `.env`. The easy way, once you are a member of the Vercel project:
+
+```
+npx vercel login
+npx vercel link       # pick the magnite-prototype project
+npx vercel env pull .env
+```
+
+   Or by hand: copy `.env.example` to `.env` and paste the strings from the Supabase dashboard's Connect dialog, ORMs tab, Prisma. `DATABASE_URL` is the transaction pooler on port 6543 and `DIRECT_URL` is the direct connection on port 5432.
+
 2. Then:
 
 ```
 npm install          # also generates the Prisma client
-npm run db:reset     # creates the tables and loads the mock rows
 npm run dev          # http://localhost:3000
 ```
+
+The database is shared and already seeded, so `db:reset` is only needed after a schema change (it reloads every row for everyone, so say so in the channel first).
 
 The home page shows a tile per table with its row count. Each tile opens a paged table view of every row and column, including joined account and product names. `npm run db:studio` opens Prisma Studio for editing rows directly.
 
 Other scripts: `db:push` applies schema changes without reseeding, `db:seed` reloads rows only, `typecheck` runs the TypeScript compiler.
 
-**Resetting before a demo.** `npm run db:seed` wipes and reloads every table in about a minute. The data is deterministic, so the result is identical every time.
+**Resetting before a demo.** `npm run db:seed` wipes and reloads every table in about ten seconds. The data is deterministic, so the result is identical every time.
 
 ### Deploying the app
 
-The database lives on Supabase. The app itself deploys to Vercel: import the GitHub repo, set the same two environment variables in the project settings, and deploy. The build runs `prisma generate` through the `postinstall` hook, so no extra build step is needed.
+The database lives on Supabase and the app on Vercel, project `magnite-prototype`, which holds the same two environment variables. `npx vercel deploy --prod` from a linked checkout publishes the current working tree; the build runs `prisma generate` through the `postinstall` hook, so no extra build step is needed.
 
 ## Data model
 
