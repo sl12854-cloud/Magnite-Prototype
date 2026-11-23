@@ -316,7 +316,8 @@ export async function seedVolume(prisma: PrismaClient) {
       : 35 + Math.floor(rand() * 34);
 
     const routedAt = new Date(receivedAt.getTime() + (2 + Math.floor(rand() * 5)) * 60000);
-    const assignedAt = new Date(routedAt.getTime() + assignMinutes[i] * 60000);
+    // Measured from receipt, like the metric, and never before routing.
+    const assignedAt = new Date(Math.max(routedAt.getTime() + 60000, receivedAt.getTime() + assignMinutes[i] * 60000));
     const open = rand() < 0.14;
     const closedAt = open ? null : new Date(assignedAt.getTime() + (30 + Math.floor(rand() * 2600)) * 60000);
     const owner = finalQueue === NEEDS_REVIEW ? null : OWNERS[Math.floor(rand() * OWNERS.length)];

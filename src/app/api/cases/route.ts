@@ -105,5 +105,3 @@ export async function POST(req: Request) {
   return NextResponse.json(created, { status: 201 });
 }
 
-/** Exposed so the A1 filter chips can be built from one source of truth. */
-export const FILTERS = { queues: QUEUES, statuses: CASE_STATUSES };
