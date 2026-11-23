@@ -19,3 +19,7 @@ prisma/*.db-journal
 .DS_Store
 *.log
 *.tsbuildinfo
+
+# local database and generated client
+prisma/dev.db
+prisma/dev.db-journal
