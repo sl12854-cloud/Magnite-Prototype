@@ -1,0 +1,72 @@
+{
+  "v": 3,
+  "attachments": {},
+  "boards": {
+    "CampaignDetail.dc.html": {
+      "expand": "fill",
+      "h": 1300,
+      "title": "B2 · Campaign builder",
+      "w": 1440,
+      "x": 1520,
+      "y": 1480
+    },
+    "Campaigns.dc.html": {
+      "expand": "fill",
+      "h": 980,
+      "title": "B1 · Campaigns",
+      "w": 1440,
+      "x": 0,
+      "y": 1480
+    },
+    "Main.dc.html": {
+      "expand": "fill",
+      "h": 980,
+      "title": "A1 · Case queue",
+      "w": 1440,
+      "x": 0,
+      "y": 0
+    },
+    "RoutingPerformance.dc.html": {
+      "expand": "fill",
+      "h": 1240,
+      "title": "A2 · Routing performance",
+      "w": 1440,
+      "x": 1520,
+      "y": 0
+    }
+  },
+  "createdOnFiles": {
+    "at": "2026-10-28T20:10:00Z",
+    "v": 1
+  },
+  "designSystems": [],
+  "launch": {
+    "view": "canvas"
+  },
+  "notes": {
+    "t1": {
+      "kind": "title1",
+      "maxW": 2960,
+      "text": "Prototype A · AI case routing in Mandala",
+      "w": 240,
+      "x": 0,
+      "y": -300
+    },
+    "t2": {
+      "kind": "title1",
+      "maxW": 2960,
+      "text": "Prototype B · Client-comms campaign builder",
+      "w": 240,
+      "x": 0,
+      "y": 1180
+    }
+  },
+  "order": [
+    "Main.dc.html",
+    "RoutingPerformance.dc.html",
+    "Campaigns.dc.html",
+    "CampaignDetail.dc.html"
+  ],
+  "pages": [],
+  "title": "Magnite Prototype Wireframes"
+}

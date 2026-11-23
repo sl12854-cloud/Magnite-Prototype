@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Case queue</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=STIX+Two+Text:wght@600&amp;display=swap">
+<style>
+body{margin:0;font-family:"DM Sans",system-ui,sans-serif;color:#1A1A1A;background:#F5F6F8}
+a{color:#3348F0}a:hover{color:#2436B8}
+th{font-weight:600;font-size:12px;color:#5A5A5A;text-align:left;padding:10px 12px;border-bottom:1px solid #DCDCDC;white-space:nowrap;background:#F2F2F2}
+td{font-size:13px;padding:12px;border-bottom:1px solid #ECECEC;vertical-align:middle}
+button{font-family:inherit}
+</style>
+</helmet>
+<div style="display: flex; flex-wrap: wrap; min-height: 980px; background: #F5F6F8">
+
+  <nav aria-label="Apps" style="width: 64px; display: flex; flex-direction: column; align-items: center; gap: 18px; padding: 16px 0; background: #FFFFFF; border-right: 1px solid #E6E6E6">
+    <div style="width: 32px; height: 32px; border-radius: 8px; background: #222222; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px">M</div>
+    <button aria-label="New" style="width: 36px; height: 36px; border-radius: 8px; border: 0; background: #3348F0; color: #FFFFFF; font-size: 20px; cursor: pointer">+</button>
+    <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8C8C8C" stroke-width="1.8"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"></path></svg>
+    <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3348F0" stroke-width="1.8"><path d="M3 5h18v10H3zM3 15l3 4h12l3-4"></path></svg>
+    <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8C8C8C" stroke-width="1.8"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 4-6 8-6s8 2 8 6"></path></svg>
+    <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8C8C8C" stroke-width="1.8"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path></svg>
+    <div style="flex: 1 1 0"></div>
+    <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8C8C8C" stroke-width="1.8"><circle cx="12" cy="12" r="3"></circle><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.4-2.3 1a7 7 0 0 0-1.7-1L14.5 3h-5l-.4 2.6a7 7 0 0 0-1.7 1l-2.3-1-2 3.4 2 1.5a7 7 0 0 0 0 2l-2 1.5 2 3.4 2.3-1a7 7 0 0 0 1.7 1l.4 2.6h5l.4-2.6a7 7 0 0 0 1.7-1l2.3 1 2-3.4-2-1.5c.1-.3.1-.7.1-1z"></path></svg>
+  </nav>
+
+  <aside style="width: 232px; background: #FFFFFF; border-right: 1px solid #E6E6E6; padding: 20px 16px; display: flex; flex-direction: column; gap: 6px">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px">
+      <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: #8C8C8C">QUEUES</span>
+      <span style="font-size: 11px; color: #8C8C8C">support@magnite.com</span>
+    </div>
+    <sc-for list="{{queues}}" as="q" hint-placeholder-count="9">
+      <a href="#" style="display: flex; justify-content: space-between; align-items: center; padding: 9px 12px; border-radius: 6px; text-decoration: none; font-size: 14px; color: {{q.fg}}; background: {{q.bg}}; font-weight: {{q.weight}}">
+        <span>{{q.name}}</span>
+        <span style="font-size: 12px; padding: 1px 8px; border-radius: 10px; background: {{q.countBg}}; color: #5A5A5A">{{q.count}}</span>
+      </a>
+    </sc-for>
+    <div style="flex: 1 1 0"></div>
+    <div style="font-size: 12px; color: #8C8C8C; line-height: 1.5">Routing accuracy this week<br><span style="font-size: 20px; font-weight: 700; color: #1A1A1A">91%</span> <span style="color: #2E8B57; font-weight: 600">↑ 4 pts</span></div>
+  </aside>
+
+  <main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+    <header style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px; padding: 14px 28px; background: #FFFFFF; border-bottom: 1px solid #E6E6E6">
+      <div style="font-size: 14px; font-weight: 600">Magnite <span style="color: #8C8C8C; font-weight: 400">/ Mandala / Case Router</span></div>
+      <label style="flex: 1 1 320px; max-width: 520px; display: flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 20px; background: #F2F2F2; color: #8C8C8C; font-size: 13px">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8C8C8C" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
+        <input type="search" placeholder="Search cases, accounts, senders" style="flex: 1; border: 0; background: transparent; font: inherit; color: #1A1A1A; outline: none">
+      </label>
+      <div style="margin-left: auto; display: flex; align-items: center; gap: 10px">
+        <button aria-label="Notifications" style="width: 36px; height: 36px; border-radius: 8px; border: 1px solid #DCDCDC; background: #FFFFFF; cursor: pointer; display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="1.8"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 21h4"></path></svg></button>
+        <div style="width: 36px; height: 36px; border-radius: 50%; background: #222222; color: #FFFFFF; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center">JB</div>
+      </div>
+    </header>
+
+    <section style="padding: 24px 28px; display: flex; flex-direction: column; gap: 18px">
+      <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px">
+        <div style="display: flex; align-items: center; gap: 12px">
+          <h1 style="margin: 0; font-family: 'STIX Two Text', Georgia, serif; font-weight: 600; font-size: 28px">Cases</h1>
+          <span style="font-size: 13px; color: #8C8C8C">CTV Tech Ops · updated 2 min ago</span>
+        </div>
+        <div style="display: flex; gap: 10px">
+          <button style="padding: 10px 16px; border-radius: 6px; border: 1px solid #DCDCDC; background: #FFFFFF; font-size: 14px; font-weight: 600; cursor: pointer">Route with rules only</button>
+          <button style="padding: 10px 16px; border-radius: 6px; border: 0; background: #3348F0; color: #FFFFFF; font-size: 14px; font-weight: 600; cursor: pointer">✦ Route inbox with AI · 6 waiting</button>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; border-bottom: 1px solid #DCDCDC">
+        <div style="display: flex; gap: 22px; font-size: 14px">
+          <a href="#" style="padding: 8px 2px; border-bottom: 2px solid #3348F0; color: #1A1A1A; font-weight: 600; text-decoration: none">All cases <span style="color: #8C8C8C; font-weight: 400">42</span></a>
+          <a href="#" style="padding: 8px 2px; color: #5A5A5A; text-decoration: none">Mine <span style="color: #8C8C8C">5</span></a>
+          <a href="#" style="padding: 8px 2px; color: #5A5A5A; text-decoration: none">Needs review <span style="color: #B7791F; font-weight: 600">3</span></a>
+          <a href="#" style="padding: 8px 2px; color: #5A5A5A; text-decoration: none">+ Add view</a>
+        </div>
+        <a href="RoutingPerformance.dc.html" style="font-size: 13px; font-weight: 600; padding: 6px 0">View routing performance →</a>
+      </div>
+
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px">
+        <label style="display: flex; align-items: center; gap: 8px; padding: 8px 12px; border: 1px solid #DCDCDC; border-radius: 6px; background: #FFFFFF; font-size: 13px; width: 220px; color: #8C8C8C">
+          <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8C8C8C" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
+          <input type="search" placeholder="Search" style="border: 0; background: transparent; font: inherit; outline: none; width: 100%">
+        </label>
+        <button style="padding: 8px 12px; border: 1px solid #DCDCDC; border-radius: 6px; background: #FFFFFF; font-size: 13px; font-weight: 600; cursor: pointer">Queue ▾</button>
+        <button style="padding: 8px 12px; border: 1px solid #DCDCDC; border-radius: 6px; background: #FFFFFF; font-size: 13px; font-weight: 600; cursor: pointer">Status ▾</button>
+        <button style="padding: 8px 12px; border: 1px solid #DCDCDC; border-radius: 6px; background: #FFFFFF; font-size: 13px; font-weight: 600; cursor: pointer">Confidence ▾</button>
+        <button style="padding: 8px 12px; border: 1px solid #DCDCDC; border-radius: 6px; background: #FFFFFF; font-size: 13px; font-weight: 600; cursor: pointer">Received ▾</button>
+        <div style="flex: 1 1 0"></div>
+        <button style="padding: 8px 12px; border: 1px solid #DCDCDC; border-radius: 6px; background: #FFFFFF; font-size: 13px; font-weight: 600; cursor: pointer">Manage table</button>
+      </div>
+
+      <div style="overflow-x: auto; background: #FFFFFF; border: 1px solid #E6E6E6; border-radius: 8px">
+        <table style="width: 100%; min-width: 1040px; border-collapse: collapse">
+          <thead>
+            <tr>
+              <th>Subject ⇅</th><th>From · account</th><th>Routed to ⇅</th><th>Confidence ⇅</th><th>Status ⇅</th><th>Owner</th><th>Received ⇅</th><th style="width: 36px"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <sc-for list="{{cases}}" as="c" hint-placeholder-count="10">
+              <tr>
+                <td style="font-weight: 600; max-width: 320px">{{c.subject}}<div style="font-weight: 400; font-size: 12px; color: #5A5A5A; margin-top: 2px">{{c.intent}}</div></td>
+                <td><div>{{c.from}}</div><div style="font-size: 12px; color: #5A5A5A">{{c.account}}</div></td>
+                <td style="white-space: nowrap">{{c.queue}}</td>
+                <td><span style="display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 10px; background: {{c.confBg}}; color: {{c.confFg}}">{{c.conf}}</span></td>
+                <td><span style="display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 10px; background: {{c.stBg}}; color: {{c.stFg}}">{{c.status}}</span></td>
+                <td style="white-space: nowrap; color: #5A5A5A">{{c.owner}}</td>
+                <td style="white-space: nowrap; color: #5A5A5A">{{c.received}}</td>
+                <td><button aria-label="More" style="border: 0; background: transparent; font-size: 16px; color: #8C8C8C; cursor: pointer">⋯</button></td>
+              </tr>
+            </sc-for>
+          </tbody>
+        </table>
+      </div>
+      <div style="display: flex; justify-content: space-between; font-size: 12px; color: #8C8C8C">
+        <span>Showing 10 of 42 open cases</span>
+        <span>Every email to support@ becomes a case here. Nothing is written to Salesforce until a case closes.</span>
+      </div>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#3348F0","options":["#3348F0","#222222","#269A87"]},"$preview":{"width":1440,"height":980}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const conf = p => p >= 85 ? { bg: '#E3F5EA', fg: '#2E8B57' } : p >= 70 ? { bg: '#FBF1DC', fg: '#8A5A12' } : { bg: '#F9E3E0', fg: '#B03A2E' };
+    const st = s => s === 'New' ? { bg: '#E9EBFB', fg: '#2436B8' } : s === 'Closed' ? { bg: '#E3F5EA', fg: '#2E8B57' } : s === 'Needs review' ? { bg: '#F9E3E0', fg: '#B03A2E' } : { bg: '#FBF1DC', fg: '#8A5A12' };
+    const rows = [
+      ['Deal ID not showing in the streaming platform', 'Deal activation check', 'adops@bluepeakstreaming.tv', 'BluePeak Streaming · Streaming', 'CTV Tech Ops', 94, 'In progress', 'A. Nguyen', '9:12 AM'],
+      ['Fill rate dropped to 12% on CTV after tag update', 'Ad-serving issue', 'tech@orchardtv.com', 'Orchard TV · Streaming', 'CTV Tech Ops', 91, 'New', '—', '8:40 AM'],
+      ['VAST 303 errors on our preroll router since last night', 'Router error', 'ops@northwindmedia.com', 'Northwind Media · SpringServe', 'SpringServe Support', 96, 'Assigned', 'D. Park', '8:05 AM'],
+      ['Fee showing as 15% on new SpringServe seat, contract says 12%', 'Fee configuration', 'ops@northwindmedia.com', 'Northwind Media · SpringServe', 'Needs review', 61, 'Needs review', '—', '7:58 AM'],
+      ['New seat for our trading desk in DV+', 'Seat creation', 'partnerships@atlasbuyers.co', 'Atlas Buyers · ClearLine', 'DV+ Support', 88, 'New', '—', 'Yesterday'],
+      ['Invoice 10422 does not match our report', 'Billing discrepancy', 'ap@harborlightnews.com', 'Harbor Light News · DV+', 'Billing & Finance', 93, 'Waiting on client', 'M. Okafor', 'Yesterday'],
+      ['Redlines on MSA section 7 (data processing)', 'Contract review', 'legal@kestrelgames.io', 'Kestrel Games · SpringServe', 'Legal & Contracts', 97, 'Assigned', 'S. Ruiz', 'Yesterday'],
+      ['Question about our contract and an unpaid invoice', 'Mixed: legal + billing', 'partnerships@atlasbuyers.co', 'Atlas Buyers · ClearLine', 'Needs review', 58, 'Needs review', '—', 'Oct 26'],
+      ['Can we add a "Renewal Risk" picklist to Opportunity?', 'Salesforce field request', 'j.reyes@magnite.com', 'Magnite (internal)', 'Salesforce Ops', 95, 'Closed', 'J. Belson', 'Oct 26'],
+      ['Who is our account manager now?', 'Account contact request', 'adops@bluepeakstreaming.tv', 'BluePeak Streaming · Streaming', 'Client Services', 83, 'Closed', 'T. Lee', 'Oct 25'],
+    ].map(r => { const c = conf(r[5]), s = st(r[6]); return { subject: r[0], intent: r[1], from: r[2], account: r[3], queue: r[4], conf: r[5] + '%', confBg: c.bg, confFg: c.fg, status: r[6], stBg: s.bg, stFg: s.fg, owner: r[7], received: r[8] }; });
+    const q = (name, count, active) => ({ name, count, fg: active ? '#1A1A1A' : '#5A5A5A', bg: active ? '#E9EBFB' : 'transparent', weight: active ? 600 : 500, countBg: active ? '#FFFFFF' : '#F2F2F2' });
+    return {
+      queues: [q('support@ inbox (unrouted)', 6, false), q('CTV Tech Ops', 11, true), q('SpringServe Support', 8, false), q('DV+ Support', 5, false), q('Salesforce Ops', 4, false), q('Billing & Finance', 6, false), q('Legal & Contracts', 3, false), q('Client Services', 5, false), q('Needs review', 3, false)],
+      cases: rows,
+    };
+  }
+}
+</script>
+</body>
+</html>

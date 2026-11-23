@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Routing performance</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=STIX+Two+Text:wght@600&amp;display=swap">
+<style>
+body{margin:0;font-family:"DM Sans",system-ui,sans-serif;color:#1A1A1A;background:#F5F6F8}
+a{color:#3348F0}a:hover{color:#2436B8}
+button{font-family:inherit}
+</style>
+</helmet>
+<div style="display: flex; flex-wrap: wrap; min-height: 1240px; background: #F5F6F8">
+
+  <nav aria-label="Apps" style="width: 64px; display: flex; flex-direction: column; align-items: center; gap: 18px; padding: 16px 0; background: #FFFFFF; border-right: 1px solid #E6E6E6">
+    <div style="width: 32px; height: 32px; border-radius: 8px; background: #222222; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px">M</div>
+    <button aria-label="New" style="width: 36px; height: 36px; border-radius: 8px; border: 0; background: #3348F0; color: #FFFFFF; font-size: 20px; cursor: pointer">+</button>
+    <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8C8C8C" stroke-width="1.8"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
+    <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3348F0" stroke-width="1.8"><path d="M3 5h18v10H3zM3 15l3 4h12l3-4"/></svg>
+    <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8C8C8C" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+    <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8C8C8C" stroke-width="1.8"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
+  </nav>
+
+  <main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+    <header style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px; padding: 14px 28px; background: #FFFFFF; border-bottom: 1px solid #E6E6E6">
+      <div style="font-size: 14px; font-weight: 600">Magnite <span style="color: #8C8C8C; font-weight: 400">/ Mandala / Case Router</span></div>
+      <label style="flex: 1 1 320px; max-width: 520px; display: flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 20px; background: #F2F2F2; color: #8C8C8C; font-size: 13px">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8C8C8C" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+        <input type="search" placeholder="Search cases, accounts, senders" style="flex: 1; border: 0; background: transparent; font: inherit; color: #1A1A1A; outline: none">
+      </label>
+      <div style="margin-left: auto; width: 36px; height: 36px; border-radius: 50%; background: #222222; color: #FFFFFF; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center">JB</div>
+    </header>
+
+    <section style="padding: 24px 40px 40px; display: flex; flex-direction: column; gap: 18px; max-width: 1360px">
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 14px">
+        <a href="Main.dc.html" aria-label="Back to cases" style="width: 40px; height: 40px; border-radius: 50%; background: #F2F2F2; display: flex; align-items: center; justify-content: center; text-decoration: none; color: #1A1A1A">←</a>
+        <h1 style="margin: 0; font-family: 'STIX Two Text', Georgia, serif; font-weight: 600; font-size: 30px">Routing performance</h1>
+        <span style="font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 10px; background: #E3F5EA; color: #2E8B57">● Live</span>
+        <div style="margin-left: auto; display: flex; gap: 8px">
+          <button style="padding: 9px 14px; border: 1px solid #DCDCDC; border-radius: 6px; background: #FFFFFF; font-size: 14px; font-weight: 600; cursor: pointer">Export</button>
+          <button style="padding: 9px 14px; border: 1px solid #DCDCDC; border-radius: 6px; background: #FFFFFF; font-size: 14px; font-weight: 600; cursor: pointer">Threshold: 70% ▾</button>
+        </div>
+      </div>
+      <div style="font-size: 13px; color: #5A5A5A">Owner <span style="color: #1A1A1A; font-weight: 600">Jared Belson</span> · Model <span style="color: #1A1A1A; font-weight: 600">Claude (approved provider)</span> · Routing since <span style="color: #1A1A1A; font-weight: 600">Nov 3, 2026</span></div>
+
+      <div style="display: flex; gap: 24px; border-bottom: 1px solid #DCDCDC; font-size: 14px">
+        <a href="#" style="padding: 8px 2px; color: #5A5A5A; text-decoration: none">Queues</a>
+        <a href="#" style="padding: 8px 2px; border-bottom: 2px solid #3348F0; color: #1A1A1A; font-weight: 600; text-decoration: none">Performance</a>
+        <a href="#" style="padding: 8px 2px; color: #5A5A5A; text-decoration: none">Corrections</a>
+      </div>
+
+      <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px">
+        <button style="padding: 8px 12px; border: 1px solid #DCDCDC; border-radius: 6px; background: #FFFFFF; font-size: 13px; font-weight: 600; cursor: pointer">Nov 3, 2026 – Nov 24, 2026 ▾</button>
+        <span style="font-size: 13px; color: #5A5A5A">Compared with the alias each sender used before the single inbox</span>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px">
+        <div style="background: #FFFFFF; border: 1px solid #E6E6E6; border-radius: 10px; padding: 18px 20px; display: flex; flex-direction: column; gap: 4px">
+          <span style="font-size: 13px; font-weight: 600; color: #5A5A5A">Routing accuracy</span>
+          <span style="font-size: 30px; font-weight: 700">91%</span>
+          <span style="font-size: 12px; color: #5A5A5A"><span style="color: #2E8B57; font-weight: 600">↑ 4 pts</span> vs last week · 1,204 of 1,323 cases</span>
+        </div>
+        <div style="background: #FFFFFF; border: 1px solid #E6E6E6; border-radius: 10px; padding: 18px 20px; display: flex; flex-direction: column; gap: 4px">
+          <span style="font-size: 13px; font-weight: 600; color: #5A5A5A">Auto-routed</span>
+          <span style="font-size: 30px; font-weight: 700">86%</span>
+          <span style="font-size: 12px; color: #5A5A5A">14% sent to Needs review</span>
+        </div>
+        <div style="background: #FFFFFF; border: 1px solid #E6E6E6; border-radius: 10px; padding: 18px 20px; display: flex; flex-direction: column; gap: 4px">
+          <span style="font-size: 13px; font-weight: 600; color: #5A5A5A">Time to first assignment</span>
+          <span style="font-size: 30px; font-weight: 700">11 min</span>
+          <span style="font-size: 12px; color: #5A5A5A"><span style="color: #2E8B57; font-weight: 600">↓ from 47 min</span> under alias routing</span>
+        </div>
+        <div style="background: #FFFFFF; border: 1px solid #E6E6E6; border-radius: 10px; padding: 18px 20px; display: flex; flex-direction: column; gap: 4px">
+          <span style="font-size: 13px; font-weight: 600; color: #5A5A5A">Kept out of Salesforce</span>
+          <span style="font-size: 30px; font-weight: 700">2.1 GB</span>
+          <span style="font-size: 12px; color: #5A5A5A">email records this period · storage was 99% used</span>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px">
+        <div style="background: #FFFFFF; border: 1px solid #E6E6E6; border-radius: 10px; padding: 20px 22px; display: flex; flex-direction: column; gap: 14px">
+          <div style="display: flex; justify-content: space-between; align-items: baseline">
+            <span style="font-size: 15px; font-weight: 600">Cases routed per day</span>
+            <span style="font-size: 12px; color: #5A5A5A">● Auto-routed &nbsp; ○ Needs review</span>
+          </div>
+          <div style="display: flex; align-items: flex-end; gap: 10px; height: 200px; border-bottom: 1px solid #DCDCDC; padding: 0 6px">
+            <sc-for list="{{days}}" as="d" hint-placeholder-count="7">
+              <div style="flex: 1 1 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 4px; height: 100%">
+                <span style="font-size: 11px; color: #5A5A5A">{{d.total}}</span>
+                <div style="width: 70%; display: flex; flex-direction: column; justify-content: flex-end; height: {{d.h}}">
+                  <div style="background: #C5C9F7; height: {{d.reviewH}}"></div>
+                  <div style="background: #3348F0; height: {{d.autoH}}"></div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display: flex; justify-content: space-around; font-size: 12px; color: #5A5A5A"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+        </div>
+
+        <div style="background: #FFFFFF; border: 1px solid #E6E6E6; border-radius: 10px; padding: 20px 22px; display: flex; flex-direction: column; gap: 14px">
+          <span style="font-size: 15px; font-weight: 600">Where cases went</span>
+          <div style="display: flex; align-items: center; gap: 28px; flex-wrap: wrap">
+            <svg role="img" aria-label="Share of cases by queue" width="200" height="200" viewBox="0 0 42 42">
+              <circle cx="21" cy="21" r="15.9" fill="none" stroke="#F2F2F2" stroke-width="6"/>
+              <circle cx="21" cy="21" r="15.9" fill="none" stroke="#3348F0" stroke-width="6" stroke-dasharray="28 72" stroke-dashoffset="25"/>
+              <circle cx="21" cy="21" r="15.9" fill="none" stroke="#269A87" stroke-width="6" stroke-dasharray="22 78" stroke-dashoffset="-3"/>
+              <circle cx="21" cy="21" r="15.9" fill="none" stroke="#8A5CE6" stroke-width="6" stroke-dasharray="14 86" stroke-dashoffset="-25"/>
+              <circle cx="21" cy="21" r="15.9" fill="none" stroke="#B7791F" stroke-width="6" stroke-dasharray="12 88" stroke-dashoffset="-39"/>
+              <circle cx="21" cy="21" r="15.9" fill="none" stroke="#C0392B" stroke-width="6" stroke-dasharray="10 90" stroke-dashoffset="-51"/>
+              <circle cx="21" cy="21" r="15.9" fill="none" stroke="#8C8C8C" stroke-width="6" stroke-dasharray="14 86" stroke-dashoffset="-61"/>
+              <text x="21" y="20" text-anchor="middle" font-size="3" fill="#5A5A5A">Cases</text>
+              <text x="21" y="26" text-anchor="middle" font-size="6" font-weight="700" fill="#1A1A1A">1,323</text>
+            </svg>
+            <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px">
+              <div style="display: flex; gap: 10px; align-items: center"><span style="width: 10px; height: 10px; border-radius: 50%; background: #3348F0"></span><span style="width: 150px; color: #5A5A5A">CTV Tech Ops</span><b>371</b></div>
+              <div style="display: flex; gap: 10px; align-items: center"><span style="width: 10px; height: 10px; border-radius: 50%; background: #269A87"></span><span style="width: 150px; color: #5A5A5A">SpringServe Support</span><b>291</b></div>
+              <div style="display: flex; gap: 10px; align-items: center"><span style="width: 10px; height: 10px; border-radius: 50%; background: #8A5CE6"></span><span style="width: 150px; color: #5A5A5A">DV+ Support</span><b>185</b></div>
+              <div style="display: flex; gap: 10px; align-items: center"><span style="width: 10px; height: 10px; border-radius: 50%; background: #B7791F"></span><span style="width: 150px; color: #5A5A5A">Billing &amp; Finance</span><b>159</b></div>
+              <div style="display: flex; gap: 10px; align-items: center"><span style="width: 10px; height: 10px; border-radius: 50%; background: #C0392B"></span><span style="width: 150px; color: #5A5A5A">Legal &amp; Contracts</span><b>132</b></div>
+              <div style="display: flex; gap: 10px; align-items: center"><span style="width: 10px; height: 10px; border-radius: 50%; background: #8C8C8C"></span><span style="width: 150px; color: #5A5A5A">Other + review</span><b>185</b></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background: #FFFFFF; border: 1px solid #E6E6E6; border-radius: 10px; padding: 20px 22px; display: flex; flex-direction: column; gap: 14px">
+          <span style="font-size: 15px; font-weight: 600">Accuracy by queue</span>
+          <sc-for list="{{byQueue}}" as="q" hint-placeholder-count="6">
+            <div style="display: flex; align-items: center; gap: 12px; font-size: 13px">
+              <span style="width: 150px; color: #5A5A5A">{{q.name}}</span>
+              <div style="flex: 1 1 0; height: 10px; background: #F2F2F2; border-radius: 5px; overflow: hidden"><div style="height: 100%; width: {{q.w}}; background: {{q.color}}"></div></div>
+              <b style="width: 40px; text-align: right">{{q.pct}}</b>
+            </div>
+          </sc-for>
+          <span style="font-size: 12px; color: #5A5A5A">Billing &amp; Legal overlap most: 38 cases mentioned both an invoice and a contract.</span>
+        </div>
+
+        <div style="background: #FFFFFF; border: 1px solid #E6E6E6; border-radius: 10px; padding: 20px 22px; display: flex; flex-direction: column; gap: 12px">
+          <div style="display: flex; justify-content: space-between; align-items: baseline">
+            <span style="font-size: 15px; font-weight: 600">Recent corrections</span>
+            <a href="#" style="font-size: 13px; font-weight: 600">All 119 →</a>
+          </div>
+          <sc-for list="{{fixes}}" as="f" hint-placeholder-count="4">
+            <div style="display: flex; flex-direction: column; gap: 2px; padding: 8px 0; border-top: 1px solid #ECECEC; font-size: 13px">
+              <span style="font-weight: 600">{{f.subject}}</span>
+              <span style="color: #5A5A5A">{{f.moved}} · by {{f.who}}</span>
+            </div>
+          </sc-for>
+          <span style="font-size: 12px; color: #5A5A5A">A moved case retrains nothing by itself; corrections are reviewed weekly and added to the routing rules.</span>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1240}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const days = [[62, 9], [71, 11], [58, 8], [66, 12], [74, 10], [21, 4], [14, 3]].map(([a, r]) => { const t = a + r, h = Math.round(t / 86 * 180); return { total: t, h: h + 'px', autoH: Math.round(h * a / t) + 'px', reviewH: Math.round(h * r / t) + 'px' }; });
+    const byQueue = [['CTV Tech Ops', 94], ['SpringServe Support', 93], ['DV+ Support', 90], ['Salesforce Ops', 95], ['Billing & Finance', 84], ['Legal & Contracts', 82]].map(([name, p]) => ({ name, pct: p + '%', w: p + '%', color: p >= 90 ? '#3348F0' : '#B7791F' }));
+    const fixes = [
+      { subject: 'Fee showing as 15% on new SpringServe seat', moved: 'Needs review → SpringServe Support', who: 'D. Park' },
+      { subject: 'Question about our contract and an unpaid invoice', moved: 'Needs review → Billing & Finance', who: 'M. Okafor' },
+      { subject: 'Cannot log in to ClearLine since password reset', moved: 'Client Services → DV+ Support', who: 'T. Lee' },
+      { subject: 'DPA signature request', moved: 'Salesforce Ops → Legal & Contracts', who: 'S. Ruiz' },
+    ];
+    return { days, byQueue, fixes };
+  }
+}
+</script>
+</body>
+</html>
