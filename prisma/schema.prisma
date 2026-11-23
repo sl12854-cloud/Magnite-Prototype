@@ -3,13 +3,7 @@
 // listed in a comment above each field.
 
 generator client {
-  provider        = "prisma-client-js"
-  // The Rust query engine is downloaded from binaries.prisma.sh, which is not
-  // reachable from the sandboxes this project is built in. The WebAssembly
-  // engine ships inside the npm package instead, so it needs no download and
-  // behaves identically for SQLite.
-  engineType      = "client"
-  previewFeatures = ["driverAdapters", "queryCompiler"]
+  provider = "prisma-client-js"
 }
 
 datasource db {

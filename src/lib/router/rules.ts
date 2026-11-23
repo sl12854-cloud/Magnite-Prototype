@@ -112,7 +112,7 @@ function scoreToConfidence(top: number, runnerUp: number): number {
   if (top === 0) return 0;
   const base = Math.min(88, 55 + top * 7);
   const margin = top - runnerUp;
-  const penalty = margin <= 0 ? 30 : margin === 1 ? 14 : margin === 2 ? 5 : 0;
+  const penalty = margin <= 0 ? 30 : margin === 1 ? 10 : margin === 2 ? 4 : 0;
   return Math.max(0, Math.round(base - penalty));
 }
 
@@ -121,9 +121,13 @@ export function classifyWithRules(input: { subject: string; body?: string | null
   const totals = new Map<Queue, { score: number; notes: string[] }>();
 
   for (const rule of RULES) {
-    if (!rule.patterns.some((p) => p.test(text))) continue;
+    // Several distinct patterns from one rule hitting is real corroboration,
+    // not repetition: "CTV" plus "fill rate" is a stronger signal than either
+    // alone. Capped at two so a keyword-stuffed email cannot run away with it.
+    const hits = rule.patterns.filter((p) => p.test(text)).length;
+    if (hits === 0) continue;
     const entry = totals.get(rule.queue) ?? { score: 0, notes: [] };
-    entry.score += rule.weight;
+    entry.score += rule.weight * Math.min(hits, 2);
     entry.notes.push(rule.note);
     totals.set(rule.queue, entry);
   }
