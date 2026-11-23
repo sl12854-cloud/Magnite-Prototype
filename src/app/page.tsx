@@ -11,7 +11,7 @@ export default async function Home() {
     <>
       <h1>Magnite Prototype · mock data</h1>
       <p className="sub">
-        Salesforce-shaped tables in SQLite via Prisma. Reload rows any time with <code>npm run db:reset</code>.
+        Salesforce-shaped tables in Postgres on Supabase, via Prisma. Reload rows any time with <code>npm run db:reset</code>.
       </p>
       <div className="grid">
         {slugs.map((slug, i) => (

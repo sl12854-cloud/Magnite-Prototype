@@ -130,3 +130,17 @@ td.muted {
   font-weight: 600;
   color: var(--text);
 }
+
+.pager {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: var(--muted);
+  margin: 12px 0;
+}
+
+.pager a {
+  font-weight: 600;
+  text-decoration: none;
+}

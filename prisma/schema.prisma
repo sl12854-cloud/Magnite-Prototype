@@ -1,14 +1,19 @@
 // Mock Salesforce-shaped data model for the Magnite Mandala prototypes.
-// SQLite has no enums, so closed sets are strings; accepted values are
-// listed in a comment above each field.
+// Closed sets are plain strings so the seed and the UI stay simple;
+// accepted values are listed in a comment above each field.
+//
+// Hosted on Supabase Postgres. DATABASE_URL is the pooled connection
+// (port 6543) used by the app; DIRECT_URL is the direct connection
+// (port 5432) used by `prisma db push` and the seed. See .env.example.
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Account {

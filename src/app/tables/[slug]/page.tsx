@@ -1,23 +1,28 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { TABLES, isTableSlug, type TableSlug } from "@/lib/tables";
+import { PAGE_SIZE, TABLES, isTableSlug, type TableSlug } from "@/lib/tables";
 
 export const dynamic = "force-dynamic";
 
 type Row = Record<string, unknown>;
 
-/** Flattens included relations ({ account: { name } } -> "account.name") and hides noisy columns. */
+/**
+ * Flattens included relations ({ account: { name } } -> "account.name"),
+ * puts them first, and hides internal ids and timestamps so the human-readable
+ * columns are what you see.
+ */
 function flatten(row: Row): Record<string, unknown> {
-  const out: Record<string, unknown> = {};
+  const joined: Record<string, unknown> = {};
+  const own: Record<string, unknown> = {};
   for (const [k, v] of Object.entries(row)) {
-    if (k === "updatedAt") continue;
+    if (k === "id" || k === "updatedAt" || k.endsWith("Id")) continue;
     if (v && typeof v === "object" && !(v instanceof Date)) {
-      for (const [ik, iv] of Object.entries(v as Row)) out[`${k}.${ik}`] = iv;
+      for (const [ik, iv] of Object.entries(v as Row)) joined[`${k}.${ik}`] = iv;
     } else {
-      out[k] = v;
+      own[k] = v;
     }
   }
-  return out;
+  return { ...joined, ...own };
 }
 
 function fmt(v: unknown): string {
@@ -28,13 +33,34 @@ function fmt(v: unknown): string {
   return String(v);
 }
 
-export default async function TablePage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function TablePage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ page?: string }>;
+}) {
   const { slug } = await params;
   if (!isTableSlug(slug)) notFound();
 
-  const rows = (await TABLES[slug].list()).map((r) => flatten(r as Row));
+  const { page: pageParam } = await searchParams;
+  const total = await TABLES[slug].count();
+  const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  const page = Math.min(pages, Math.max(1, Number(pageParam) || 1));
+  const skip = (page - 1) * PAGE_SIZE;
+
+  const rows = (await TABLES[slug].list(skip)).map((r) => flatten(r as Row));
   const columns = rows.length ? Object.keys(rows[0]) : [];
   const slugs = Object.keys(TABLES) as TableSlug[];
+  const pager = (
+    <div className="pager">
+      {page > 1 ? <Link href={`/tables/${slug}?page=${page - 1}`}>← Previous</Link> : <span />}
+      <span>
+        Page {page} of {pages} · rows {total ? skip + 1 : 0}–{Math.min(skip + PAGE_SIZE, total)} of {total.toLocaleString("en-US")}
+      </span>
+      {page < pages ? <Link href={`/tables/${slug}?page=${page + 1}`}>Next →</Link> : <span />}
+    </div>
+  );
 
   return (
     <>
@@ -48,8 +74,9 @@ export default async function TablePage({ params }: { params: Promise<{ slug: st
       </nav>
       <h1>{TABLES[slug].label}</h1>
       <p className="sub">
-        {rows.length} rows · {TABLES[slug].hint}
+        {total.toLocaleString("en-US")} rows · {TABLES[slug].hint}
       </p>
+      {pager}
       <div className="tablewrap">
         <table>
           <thead>
@@ -61,7 +88,7 @@ export default async function TablePage({ params }: { params: Promise<{ slug: st
           </thead>
           <tbody>
             {rows.map((r, i) => (
-              <tr key={(r.id as string) ?? i}>
+              <tr key={i}>
                 {columns.map((c) => (
                   <td key={c} className={r[c] == null ? "muted" : undefined} title={fmt(r[c])}>
                     {fmt(r[c])}
@@ -72,6 +99,7 @@ export default async function TablePage({ params }: { params: Promise<{ slug: st
           </tbody>
         </table>
       </div>
+      {pager}
     </>
   );
 }

@@ -263,10 +263,13 @@ export async function seedVolume(prisma: PrismaClient) {
   const movedOutOfReview = correctedIdx.length - q2qAt.size;
   const stillInReview = QUEUE_PLAN["Needs review"][0];
   const initialReview = movedOutOfReview + stillInReview;
-  // Two hand-written rows also sit in Needs review, so the generator carries
-  // the remaining 183 of the 185 that A2 counts as not auto-routed.
-  if (initialReview !== TARGETS.initialReview - 2) {
-    throw new Error(`initial review count is ${initialReview}, expected ${TARGETS.initialReview - 2}`);
+  // The queue plan yields 112 moved out of review plus 69 still there: 181.
+  // The hand-written rows supply the rest of A2's 185 not auto-routed: two
+  // sitting in Needs review and one routed below the 70% threshold (C-10204).
+  // The two unrouted support@ rows sit outside the queue split altogether.
+  const expectedInitialReview = TARGETS.initialReview - 4;
+  if (initialReview !== expectedInitialReview) {
+    throw new Error(`initial review count is ${initialReview}, expected ${expectedInitialReview}`);
   }
 
   // Attachment sizes: log-normal-ish, then scaled so the total lands on 2.1 GB.

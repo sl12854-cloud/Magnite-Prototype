@@ -63,33 +63,47 @@ Design source: [Magnite Prototype Wireframes canvas](https://claude.ai/artifact/
 
 ## Running the mock data app
 
-Next.js 15 with Prisma 6 on SQLite. No external services or credentials are needed.
+Next.js 15 with Prisma 6 on Postgres, hosted on Supabase. The only credential is the database connection string.
+
+1. Copy `.env.example` to `.env` and paste the two connection strings from the Supabase dashboard under Project Settings, Database. `DATABASE_URL` is the transaction pooler on port 6543 and `DIRECT_URL` is the direct connection on port 5432. `.env` is git-ignored.
+2. Then:
 
 ```
 npm install          # also generates the Prisma client
-npm run db:reset     # creates prisma/dev.db and loads the dummy rows
+npm run db:reset     # creates the tables and loads the mock rows
 npm run dev          # http://localhost:3000
 ```
 
-The home page shows a tile per table with its row count. Each tile opens a plain table view of every row and column, including joined account and product names. `npm run db:studio` opens Prisma Studio for editing rows directly.
+The home page shows a tile per table with its row count. Each tile opens a paged table view of every row and column, including joined account and product names. `npm run db:studio` opens Prisma Studio for editing rows directly.
 
 Other scripts: `db:push` applies schema changes without reseeding, `db:seed` reloads rows only, `typecheck` runs the TypeScript compiler.
 
+**Resetting before a demo.** `npm run db:seed` wipes and reloads every table in about a minute. The data is deterministic, so the result is identical every time.
+
+### Deploying the app
+
+The database lives on Supabase. The app itself deploys to Vercel: import the GitHub repo, set the same two environment variables in the project settings, and deploy. The build runs `prisma generate` through the `postinstall` hook, so no extra build step is needed.
+
 ## Data model
 
-Seven Salesforce-shaped tables in `prisma/schema.prisma`. SQLite has no enums, so closed sets are strings and the accepted values are listed in a comment above each field.
+Seven Salesforce-shaped tables in `prisma/schema.prisma`. Closed sets are plain strings and the accepted values are listed in a comment above each field.
 
 | Table | Rows seeded | Key fields | Relations |
 | --- | --- | --- | --- |
-| Account | 11 | type, region, country, ownerName, magniteLinkActive, streamingLastActiveAt, lastContactedAt, revenueRank | has many Contact, Opportunity, MagniteContract, Case |
-| Contact | 14 | email, title, consentOptIn, isPrimary, lastContactedAt, duplicateOfId | belongs to Account; self-relation for duplicates |
-| Lead | 6 | status, source, consentOptIn, convertedAccountId, convertedContactId | optional link to Account and Contact once converted |
+| Account | ~51 | type, region, country, ownerName, magniteLinkActive, streamingLastActiveAt, lastContactedAt, revenueRank | has many Contact, Opportunity, MagniteContract, Case |
+| Contact | ~2,500 | email, title, consentOptIn, isPrimary, lastContactedAt, duplicateOfId | belongs to Account; self-relation for duplicates |
+| Lead | 60 | status, source, consentOptIn, convertedAccountId, convertedContactId | optional link to Account and Contact once converted |
 | MagniteProduct | 6 | code, name, family | has many Opportunity, MagniteContract |
-| Opportunity | 8 | stage, amountUsd, closeDate, probability, renewalRisk | belongs to Account, optional MagniteProduct |
-| MagniteContract | 10 | contractNumber, status, startDate, endDate, feePercent, msaVersion, dpaSigned, seatId | belongs to Account and MagniteProduct |
-| Case | 14 | caseNumber, subject, intent, queue, confidence, status, routingMode, receivedAt, routedAt | optional Account and Contact |
+| Opportunity | 60 | stage, amountUsd, closeDate, probability, renewalRisk | belongs to Account, optional MagniteProduct |
+| MagniteContract | 55 | contractNumber, status, startDate, endDate, feePercent, msaVersion, dpaSigned, seatId | belongs to Account and MagniteProduct |
+| Case | 1,323 | caseNumber, subject, intent, queue, initialQueue, confidence, status, routingMode, attachmentBytes, receivedAt, routedAt, assignedAt | optional Account and Contact; has many CaseCorrection |
+| CaseCorrection | 119 | fromQueue, toQueue, correctedBy, reason | belongs to Case |
 
-The seed in `prisma/seed.ts` uses the same accounts, contacts, cases and numbers that appear on the wireframes, so the data browser and the designs agree. It includes a deliberate duplicate contact pair, a contract whose fee does not match the account's case, and two unrouted cases in the support inbox.
+The seed has two layers:
+
+- `prisma/seed/fixtures.ts` holds the exact accounts, contacts, cases and numbers that appear on the wireframes, so the screens and the designs agree. It includes a deliberate duplicate contact pair, a contract whose fee does not match the account's case, and two unrouted cases in the support inbox.
+- `prisma/seed/generator.ts` adds volume around them from a seeded random generator: about 2,400 contacts of which 71% have consent and country, 5% suspected duplicates, plus 40 accounts, 54 leads, 52 opportunities and 45 contracts.
+- `prisma/volume.ts` generates the 1,309 cases and 119 corrections behind wireframe A2, built backwards from its numbers (91% accuracy, 86% auto-routed, 11 minute median assignment, 2.1 GB kept out of Salesforce) so the metrics endpoint reproduces the dashboard exactly. See [`docs/prototype-a.md`](docs/prototype-a.md).
 
 ## Repository layout
 
@@ -98,10 +112,12 @@ README.md
 package.json           Next.js app scripts, Prisma seed hook
 prisma/
   schema.prisma        the seven mock tables
-  seed.ts              dummy rows matching the wireframes
+  seed.ts              loads fixtures, generated rows and case volume
+  seed/                wireframe fixtures and the generator for the six non-case tables
+  volume.ts            case history behind wireframe A2
 src/
-  app/                 data browser: overview and one page per table
-  lib/                 Prisma client and table registry
+  app/                 data browser (/), A1 case queue (/cases), A2 dashboard (/routing-performance), API routes
+  lib/                 Prisma client, table registry, case router, email ingest, routing metrics
 wireframes/
   README.md              screen-by-screen notes and open questions
   images/                PNG renders of each screen at 2x (1440px wide)
@@ -111,4 +127,4 @@ wireframes/
 
 ## Status
 
-Wireframes plus a seeded mock database with a read-only browser. The prototype screens themselves are not built yet. See [`wireframes/README.md`](wireframes/README.md) for the screen inventory and open questions.
+Wireframes, a seeded Supabase database with a read-only browser, and Prototype A (case routing: screens A1 and A2, the case and metrics endpoints, and 21 tests via `npm test`). Prototype B is in progress on the `b1-campaigns` branch. See [`wireframes/README.md`](wireframes/README.md) for the screen inventory and open questions.
