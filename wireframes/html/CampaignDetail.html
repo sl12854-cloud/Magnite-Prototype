@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Campaign builder</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=STIX+Two+Text:wght@600&amp;display=swap">
+<style>
+body{margin:0;font-family:"DM Sans",system-ui,sans-serif;color:#1A1A1A;background:#F5F6F8}
+a{color:#3348F0}a:hover{color:#2436B8}
+th{font-weight:600;font-size:12px;color:#5A5A5A;text-align:left;padding:9px 12px;border-bottom:1px solid #DCDCDC;white-space:nowrap;background:#F2F2F2}
+td{font-size:13px;padding:10px 12px;border-bottom:1px solid #ECECEC;vertical-align:middle}
+button{font-family:inherit}
+</style>
+</head>
+<body>
+<div style="display: flex; flex-wrap: wrap; min-height: 1300px; background: #F5F6F8">
+
+  <nav aria-label="Apps" style="width: 64px; display: flex; flex-direction: column; align-items: center; gap: 18px; padding: 16px 0; background: #FFFFFF; border-right: 1px solid #E6E6E6">
+    <div style="width: 32px; height: 32px; border-radius: 8px; background: #222222; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px">M</div>
+    <button aria-label="New" style="width: 36px; height: 36px; border-radius: 8px; border: 0; background: #3348F0; color: #FFFFFF; font-size: 20px; cursor: pointer">+</button>
+    <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8C8C8C" stroke-width="1.8"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
+    <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8C8C8C" stroke-width="1.8"><path d="M3 5h18v10H3zM3 15l3 4h12l3-4"/></svg>
+    <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3348F0" stroke-width="1.8"><path d="M4 11l16-7-4 16-5-6zM11 14l-7-3"/></svg>
+    <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8C8C8C" stroke-width="1.8"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
+  </nav>
+
+  <main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+    <header style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px; padding: 14px 28px; background: #FFFFFF; border-bottom: 1px solid #E6E6E6">
+      <div style="font-size: 14px; font-weight: 600">Magnite <span style="color: #8C8C8C; font-weight: 400">/ Mandala / Client Comms</span></div>
+      <label style="flex: 1 1 320px; max-width: 520px; display: flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 20px; background: #F2F2F2; color: #8C8C8C; font-size: 13px">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8C8C8C" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+        <input type="search" placeholder="Search campaigns" style="flex: 1; border: 0; background: transparent; font: inherit; color: #1A1A1A; outline: none">
+      </label>
+      <div style="margin-left: auto; width: 36px; height: 36px; border-radius: 50%; background: #222222; color: #FFFFFF; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center">MH</div>
+    </header>
+
+    <section style="padding: 24px 40px 40px; display: flex; flex-direction: column; gap: 18px; max-width: 1360px">
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 14px">
+        <a href="Campaigns.dc.html" aria-label="Back to campaigns" style="width: 40px; height: 40px; border-radius: 50%; background: #F2F2F2; display: flex; align-items: center; justify-content: center; text-decoration: none; color: #1A1A1A">←</a>
+        <h1 style="margin: 0; font-family: 'STIX Two Text', Georgia, serif; font-weight: 600; font-size: 30px">Magnite Link upsell · Nov</h1>
+        <span style="font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 10px; background: #FBF1DC; color: #8A5A12">Awaiting approval</span>
+        <div style="margin-left: auto; display: flex; gap: 8px">
+          <button style="padding: 9px 14px; border: 1px solid #DCDCDC; border-radius: 6px; background: #FFFFFF; font-size: 14px; font-weight: 600; cursor: pointer">Edit</button>
+          <button style="padding: 9px 14px; border: 0; border-radius: 6px; background: #3348F0; color: #FFFFFF; font-size: 14px; font-weight: 600; cursor: pointer">Send to Marketo as draft</button>
+        </div>
+      </div>
+      <div style="font-size: 13px; color: #5A5A5A">Created by <b style="color: #1A1A1A">Melissa Hillard</b> · Reviewer <b style="color: #1A1A1A">Zach Pucci (revenue)</b> · Planned send <b style="color: #1A1A1A">Nov 20, 2026</b></div>
+
+      <div style="display: flex; gap: 24px; border-bottom: 1px solid #DCDCDC; font-size: 14px">
+        <a href="#" style="padding: 8px 2px; border-bottom: 2px solid #3348F0; color: #1A1A1A; font-weight: 600; text-decoration: none">Build</a>
+        <a href="#" style="padding: 8px 2px; color: #5A5A5A; text-decoration: none">Performance</a>
+        <a href="#" style="padding: 8px 2px; color: #5A5A5A; text-decoration: none">History</a>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px">
+        <div style="padding: 10px 14px; border-radius: 8px; background: #E9EBFB; border: 1px solid #C5C9F7; font-size: 13px"><b>1 · Audience</b><br><span style="color: #5A5A5A">Done · 1,240 contacts</span></div>
+        <div style="padding: 10px 14px; border-radius: 8px; background: #E9EBFB; border: 1px solid #C5C9F7; font-size: 13px"><b>2 · Segments</b><br><span style="color: #5A5A5A">Done · 3 segments</span></div>
+        <div style="padding: 10px 14px; border-radius: 8px; background: #E9EBFB; border: 1px solid #C5C9F7; font-size: 13px"><b>3 · Drafts</b><br><span style="color: #5A5A5A">Done · EN ×2, JP ×1</span></div>
+        <div style="padding: 10px 14px; border-radius: 8px; background: #FBF1DC; border: 1px solid #E8D29A; font-size: 13px"><b>4 · Revenue approval</b><br><span style="color: #5A5A5A">In review · 18 edits so far</span></div>
+      </div>
+
+      <div style="background: #FFFFFF; border: 1px solid #E6E6E6; border-radius: 10px; padding: 20px 22px; display: flex; flex-direction: column; gap: 12px">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px">
+          <span style="font-size: 15px; font-weight: 600">1 · Audience, in plain language</span>
+          <span style="font-size: 12px; color: #5A5A5A">The AI turns this into Salesforce filters you can see and change</span>
+        </div>
+        <label style="display: flex; gap: 10px; align-items: center; padding: 12px 14px; border: 1px solid #DCDCDC; border-radius: 8px; background: #FAFAFA">
+          <span aria-hidden="true" style="color: #3348F0; font-weight: 700">✦</span>
+          <input type="text" value="Publishers not using Magnite Link, active in Streaming in the last 90 days, exclude anyone contacted in the last 14 days" style="flex: 1; border: 0; background: transparent; font: inherit; font-size: 14px; color: #1A1A1A; outline: none">
+          <button style="padding: 7px 12px; border: 0; border-radius: 6px; background: #222222; color: #FFFFFF; font-size: 13px; font-weight: 600; cursor: pointer">Rebuild list</button>
+        </label>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; font-size: 12px">
+          <span style="padding: 4px 10px; border-radius: 6px; background: #F2F2F2">Account type = Publisher</span>
+          <span style="padding: 4px 10px; border-radius: 6px; background: #F2F2F2">Magnite Link active = false</span>
+          <span style="padding: 4px 10px; border-radius: 6px; background: #F2F2F2">Streaming last active ≤ 90 days</span>
+          <span style="padding: 4px 10px; border-radius: 6px; background: #F2F2F2">Last contacted &gt; 14 days</span>
+          <span style="padding: 4px 10px; border-radius: 6px; background: #E3F5EA; color: #2E8B57; font-weight: 600">Consent = opted in (required)</span>
+          <span style="padding: 4px 10px; border-radius: 6px; background: #E3F5EA; color: #2E8B57; font-weight: 600">Country present (required)</span>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 24px; font-size: 13px; color: #5A5A5A; padding-top: 4px">
+          <span><b style="color: #1A1A1A; font-size: 18px">1,240</b> contacts match</span>
+          <span><b style="color: #B03A2E; font-size: 18px">163</b> excluded: no consent</span>
+          <span><b style="color: #B03A2E; font-size: 18px">41</b> excluded: no country</span>
+          <span><b style="color: #8A5A12; font-size: 18px">27</b> possible duplicates flagged</span>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px">
+        <div style="background: #FFFFFF; border: 1px solid #E6E6E6; border-radius: 10px; padding: 20px 22px; display: flex; flex-direction: column; gap: 12px">
+          <span style="font-size: 15px; font-weight: 600">2 · Segments</span>
+          <div style="overflow-x: auto">
+            <table style="width: 100%; border-collapse: collapse; min-width: 420px">
+              <thead><tr><th>Segment</th><th>Rule</th><th style="text-align: right">Contacts</th><th>Template</th></tr></thead>
+              <tbody>
+                
+                  <tr><td style="font-weight: 600">North America</td><td style="color: #5A5A5A">Country in US, CA · sales-house publishers</td><td style="text-align: right">612</td><td>EN · Link upsell</td></tr>
+                
+                  <tr><td style="font-weight: 600">EMEA</td><td style="color: #5A5A5A">Country in EU, UK · SDK mediation + sales house</td><td style="text-align: right">389</td><td>EN · Link upsell</td></tr>
+                
+                  <tr><td style="font-weight: 600">Japan</td><td style="color: #5A5A5A">Country = JP</td><td style="text-align: right">239</td><td>JP · Link upsell</td></tr>
+                
+              </tbody>
+            </table>
+          </div>
+          <span style="font-size: 12px; color: #5A5A5A">Premium publishers (top 40 by revenue) are pulled out automatically and handed to account owners for 1:1 outreach.</span>
+        </div>
+
+        <div style="background: #FFFFFF; border: 1px solid #E6E6E6; border-radius: 10px; padding: 20px 22px; display: flex; flex-direction: column; gap: 12px">
+          <div style="display: flex; justify-content: space-between; align-items: baseline">
+            <span style="font-size: 15px; font-weight: 600">3 · Draft · Japan segment (JP)</span>
+            <span style="font-size: 12px; color: #5A5A5A">EN source → JP via internal translation</span>
+          </div>
+          <div style="display: flex; gap: 8px; font-size: 12px">
+            <span style="padding: 4px 10px; border-radius: 6px; background: #E9EBFB; font-weight: 600">JP</span>
+            <span style="padding: 4px 10px; border-radius: 6px; background: #F2F2F2">EN · North America</span>
+            <span style="padding: 4px 10px; border-radius: 6px; background: #F2F2F2">EN · EMEA</span>
+          </div>
+          <div style="border: 1px solid #DCDCDC; border-radius: 8px; padding: 14px; font-size: 13px; line-height: 1.6; display: flex; flex-direction: column; gap: 8px">
+            <div><span style="color: #5A5A5A">Subject</span> &nbsp; <b>Magnite Linkで配信を一元化しませんか</b></div>
+            <div style="color: #5A5A5A">Preview text: Streamingで配信中のパブリッシャー様へ、Magnite Linkのご案内</div>
+            <div style="border-top: 1px solid #ECECEC; padding-top: 8px">[Draft body: three short paragraphs, generated from the EN source and the segment's product-use fields. The reviewer edits in place; edits are kept per segment.]</div>
+          </div>
+          <div style="display: flex; gap: 8px">
+            <button style="padding: 7px 12px; border: 1px solid #DCDCDC; border-radius: 6px; background: #FFFFFF; font-size: 13px; font-weight: 600; cursor: pointer">Regenerate</button>
+            <button style="padding: 7px 12px; border: 1px solid #DCDCDC; border-radius: 6px; background: #FFFFFF; font-size: 13px; font-weight: 600; cursor: pointer">Show EN source</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="background: #FFFFFF; border: 1px solid #E6E6E6; border-radius: 10px; padding: 20px 22px; display: flex; flex-direction: column; gap: 12px">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px">
+          <span style="font-size: 15px; font-weight: 600">4 · Revenue approval</span>
+          <span style="font-size: 12px; color: #5A5A5A">Nothing sends until the reviewer approves. Every edit is logged and feeds the next list.</span>
+        </div>
+        <div style="overflow-x: auto">
+          <table style="width: 100%; border-collapse: collapse; min-width: 760px">
+            <thead><tr><th>Contact</th><th>Account</th><th>Segment</th><th>Reviewer action</th><th>Reason</th></tr></thead>
+            <tbody>
+              
+                <tr><td style="font-weight: 600">Hana Sato</td><td>Meridian Plus KK</td><td style="color: #5A5A5A">Japan</td><td><span style="display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 10px; background: #F9E3E0; color: #B03A2E">Removed</span></td><td style="color: #5A5A5A">Already in a renewal conversation</td></tr>
+              
+                <tr><td style="font-weight: 600">R. Alvarez</td><td>Northwind Media</td><td style="color: #5A5A5A">North America</td><td><span style="display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 10px; background: #F9E3E0; color: #B03A2E">Removed</span></td><td style="color: #5A5A5A">Premium publisher, 1:1 outreach</td></tr>
+              
+                <tr><td style="font-weight: 600">Dana Whitfield</td><td>Orchard TV</td><td style="color: #5A5A5A">North America</td><td><span style="display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 10px; background: #FBF1DC; color: #8A5A12">Changed</span></td><td style="color: #5A5A5A">Wrong contact; swapped to ad ops lead</td></tr>
+              
+                <tr><td style="font-weight: 600">L. Fischer</td><td>Kestrel Games</td><td style="color: #5A5A5A">EMEA</td><td><span style="display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 10px; background: #E3F5EA; color: #2E8B57">Kept</span></td><td style="color: #5A5A5A">Reviewer confirmed</td></tr>
+              
+                <tr><td style="font-weight: 600">Priya Nair</td><td>Sundial Apps</td><td style="color: #5A5A5A">EMEA</td><td><span style="display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 10px; background: #F9E3E0; color: #B03A2E">Removed</span></td><td style="color: #5A5A5A">Contract in termination</td></tr>
+              
+            </tbody>
+          </table>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; padding-top: 6px">
+          <span style="font-size: 13px; color: #5A5A5A">18 of 1,240 contacts edited (1.5%) · last campaign 4.2% · vetting time so far <b style="color: #1A1A1A">22 min</b> vs. ~4 hours by hand</span>
+          <div style="display: flex; gap: 8px">
+            <button style="padding: 9px 14px; border: 1px solid #DCDCDC; border-radius: 6px; background: #FFFFFF; font-size: 14px; font-weight: 600; cursor: pointer">Request changes</button>
+            <button style="padding: 9px 14px; border: 0; border-radius: 6px; background: #4DC97B; color: #0E2A17; font-size: 14px; font-weight: 600; cursor: pointer">Approve list and drafts</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+</body>
+</html>

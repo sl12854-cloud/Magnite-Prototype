@@ -1,21 +1,27 @@
 # Wireframes
 
-Source of truth is the [Magnite Prototype Wireframes canvas](https://claude.ai/artifact/Y7N2N6mfc4HmhEveEFsb7j). Files in `canvas-source/` are exact copies of its artboards as of 2026-11-23 and should be re-exported, not edited by hand, when the canvas changes.
+Source of truth is the [Magnite Prototype Wireframes canvas](https://claude.ai/artifact/Y7N2N6mfc4HmhEveEFsb7j). Everything here was exported from it on 2026-11-23 and should be re-exported, not edited by hand, when the canvas changes.
 
-Each `.dc.html` file is a self-contained Design Component page: a `<x-dc>` block of plain HTML with inline styles, plus a small script that supplies the sample data. They render in the canvas viewer, not standalone in a browser, because they depend on the canvas's `support.js`.
+Three forms of each screen:
+
+- `images/` holds PNG renders at 2x resolution, 1440px wide. Use these in docs, tickets and slides.
+- `html/` holds standalone HTML with the sample data baked in. Open any file directly in a browser. Links between screens work.
+- `canvas-source/` holds the raw artboard files. Each is a Design Component page: a `<x-dc>` block of HTML with inline styles plus a script that supplies sample data. These only render inside the canvas viewer.
 
 ## Screen inventory
 
-| ID | Title | File | Size | Links to |
-| --- | --- | --- | --- | --- |
-| A1 | Case queue | `canvas-source/Main.dc.html` | 1440 × 980 | A2 via "View routing performance" |
-| A2 | Routing performance | `canvas-source/RoutingPerformance.dc.html` | 1440 × 1240 | A1 via back arrow |
-| B1 | Campaigns | `canvas-source/Campaigns.dc.html` | 1440 × 980 | B2 via "+ New campaign" |
-| B2 | Campaign builder | `canvas-source/CampaignDetail.dc.html` | 1440 × 1300 | B1 via back arrow |
+| ID | Title | Image | HTML | Size | Links to |
+| --- | --- | --- | --- | --- | --- |
+| A1 | Case queue | `images/A1-case-queue.png` | `html/Main.html` | 1440 × 980 | A2 via "View routing performance" |
+| A2 | Routing performance | `images/A2-routing-performance.png` | `html/RoutingPerformance.html` | 1440 × 1240 | A1 via back arrow |
+| B1 | Campaigns | `images/B1-campaigns.png` | `html/Campaigns.html` | 1440 × 980 | B2 via "+ New campaign" |
+| B2 | Campaign builder | `images/B2-campaign-builder.png` | `html/CampaignDetail.html` | 1440 × 1300 | B1 via back arrow |
 
-`canvas-source/canvas.json` holds the artboard positions and the two row titles on the canvas.
+`canvas-source/canvas.json` holds the artboard positions and the two row titles on the canvas. The A1 image is captured taller than its artboard so all ten sample rows are visible. The B1 table is wider than 1440px and scrolls horizontally in the design, so its last two columns are clipped in the image, as they are on the canvas.
 
 ## A1 · Case queue
+
+![Case queue](images/A1-case-queue.png)
 
 - Sidebar lists nine queues with open counts and a "Routing accuracy this week" stat.
 - Header: breadcrumb `Magnite / Mandala / Case Router`, global search, notifications, avatar.
@@ -26,12 +32,16 @@ Each `.dc.html` file is a self-contained Design Component page: a `<x-dc>` block
 
 ## A2 · Routing performance
 
+![Routing performance](images/A2-routing-performance.png)
+
 - Header strip: Live badge, Export, Threshold selector (70%), owner, model, routing start date.
 - Tabs: Queues, Performance, Corrections.
 - Date range picker compared against the old alias-based routing.
 - Four KPI tiles, then four cards: cases per day (stacked auto vs review), share by queue (donut), accuracy by queue (bars, amber below 90%), recent corrections with who moved what.
 
 ## B1 · Campaigns
+
+![Campaigns](images/B1-campaigns.png)
 
 - Sidebar views: Campaigns, Drafts, Segments, Templates (EN / JP), Approvals. Audience health block below.
 - Search placeholder invites a plain-language list request.
@@ -40,6 +50,8 @@ Each `.dc.html` file is a self-contained Design Component page: a `<x-dc>` block
 - Statuses: Awaiting approval, Approved, Sent, Handed off.
 
 ## B2 · Campaign builder
+
+![Campaign builder](images/B2-campaign-builder.png)
 
 - Header: back arrow, campaign title, status pill, Edit, "Send to Marketo as draft". Creator, reviewer and planned send date underneath.
 - Tabs: Build, Performance, History.

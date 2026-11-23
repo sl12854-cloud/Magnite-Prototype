@@ -2,7 +2,15 @@
 
 Two AI-assisted prototypes for **Mandala**, Magnite's internal operations platform. Both sit on top of Salesforce data and share one shell: a left app rail, a queue or view sidebar, a global search bar, and a table-first work area.
 
-Design source: [Magnite Prototype Wireframes canvas](https://claude.ai/artifact/Y7N2N6mfc4HmhEveEFsb7j). Static copies of every artboard live in [`wireframes/`](wireframes/).
+Design source: [Magnite Prototype Wireframes canvas](https://claude.ai/artifact/Y7N2N6mfc4HmhEveEFsb7j). Rendered images, browsable HTML, and the raw artboard sources live in [`wireframes/`](wireframes/).
+
+| A1 · Case queue | A2 · Routing performance |
+| --- | --- |
+| ![Case queue](wireframes/images/A1-case-queue.png) | ![Routing performance](wireframes/images/A2-routing-performance.png) |
+
+| B1 · Campaigns | B2 · Campaign builder |
+| --- | --- |
+| ![Campaigns](wireframes/images/B1-campaigns.png) | ![Campaign builder](wireframes/images/B2-campaign-builder.png) |
 
 ## Prototype A · AI case routing
 
@@ -16,8 +24,8 @@ Design source: [Magnite Prototype Wireframes canvas](https://claude.ai/artifact/
 
 | Screen | File | What it shows |
 | --- | --- | --- |
-| A1 · Case queue | `wireframes/canvas-source/Main.dc.html` | Case table with subject, detected intent, sender and account, routed queue, confidence pill, status, owner, received time. Filters by queue, status, confidence, date. Primary action: "Route inbox with AI · 6 waiting". Fallback: "Route with rules only". |
-| A2 · Routing performance | `wireframes/canvas-source/RoutingPerformance.dc.html` | KPI tiles (routing accuracy, auto-routed share, time to first assignment, data kept out of Salesforce), cases per day split auto vs review, share of cases by queue, accuracy by queue, recent human corrections. |
+| A1 · Case queue | `wireframes/html/Main.html` | Case table with subject, detected intent, sender and account, routed queue, confidence pill, status, owner, received time. Filters by queue, status, confidence, date. Primary action: "Route inbox with AI · 6 waiting". Fallback: "Route with rules only". |
+| A2 · Routing performance | `wireframes/html/RoutingPerformance.html` | KPI tiles (routing accuracy, auto-routed share, time to first assignment, data kept out of Salesforce), cases per day split auto vs review, share of cases by queue, accuracy by queue, recent human corrections. |
 
 **Success metrics used in the wireframes.** Routing accuracy 91%, auto-routed 86%, time to first assignment 11 minutes (down from 47), 2.1 GB of email kept out of Salesforce per period.
 
@@ -41,8 +49,8 @@ Design source: [Magnite Prototype Wireframes canvas](https://claude.ai/artifact/
 
 | Screen | File | What it shows |
 | --- | --- | --- |
-| B1 · Campaigns | `wireframes/canvas-source/Campaigns.dc.html` | Campaign list with plain-language audience, segment count, contacts, edits by revenue, open and click rates, send date, status. Sidebar shows audience health: contacts in sync, share with consent and country, duplicates to merge. |
-| B2 · Campaign builder | `wireframes/canvas-source/CampaignDetail.dc.html` | The four-step builder for one campaign, with the approval table and "Approve list and drafts" action. |
+| B1 · Campaigns | `wireframes/html/Campaigns.html` | Campaign list with plain-language audience, segment count, contacts, edits by revenue, open and click rates, send date, status. Sidebar shows audience health: contacts in sync, share with consent and country, duplicates to merge. |
+| B2 · Campaign builder | `wireframes/html/CampaignDetail.html` | The four-step builder for one campaign, with the approval table and "Approve list and drafts" action. |
 
 **Success metric.** "Edits by revenue" per campaign. Lower is better. The sample campaign shows 1.5% of contacts edited vs 4.2% on the previous one, and 22 minutes of vetting vs about 4 hours by hand.
 
@@ -59,6 +67,8 @@ Design source: [Magnite Prototype Wireframes canvas](https://claude.ai/artifact/
 README.md
 wireframes/
   README.md              screen-by-screen notes and open questions
+  images/                PNG renders of each screen at 2x (1440px wide)
+  html/                  standalone HTML for each screen, opens in any browser
   canvas-source/         exact artboard sources exported from the design canvas
 ```
 
