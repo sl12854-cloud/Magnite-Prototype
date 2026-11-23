@@ -1,0 +1,150 @@
+/* B1 Client Comms styles, scoped to .mandala so the shared data browser is unaffected. */
+/* Let the Mandala shell use the full window inside the root layout <main>. */
+body:has(.mandala) > main { max-width: none; margin: 0; padding: 0; }
+.mandala * { box-sizing: border-box; }
+.mandala main.main { max-width: none; margin: 0; padding: 0; }
+.mandala td { white-space: normal; max-width: none; overflow: visible; vertical-align: middle; }
+/* Mandala shared tokens (from the wireframes) */
+.mandala {
+  --accent: #3348f0;
+  --accent-hover: #2436b8;
+  --accent-soft: #e9ebfb;
+  --ink: #1a1a1a;
+  --ink-2: #5a5a5a;
+  --ink-3: #8c8c8c;
+  --line: #e6e6e6;
+  --line-2: #dcdcdc;
+  --row-line: #ececec;
+  --bg: #f5f6f8;
+  --panel: #ffffff;
+  --chip: #f2f2f2;
+  --blue-bg: #e9ebfb; --blue-fg: #2436b8;
+  --amber-bg: #fbf1dc; --amber-fg: #8a5a12;
+  --green-bg: #e3f5ea; --green-fg: #2e8b57;
+  --red-bg: #f9e3e0; --red-fg: #b03a2e;
+  --serif: var(--font-stix), 'STIX Two Text', Georgia, serif;
+}
+
+.mandala { font-family: var(--font-dm-sans), 'DM Sans', system-ui, sans-serif; color: var(--ink); background: var(--bg); -webkit-font-smoothing: antialiased; }
+.mandala a { color: var(--accent); }
+.mandala a:hover { color: var(--accent-hover); }
+.mandala button, .mandala input, .mandala select { font: inherit; color: inherit; }
+.mandala :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ---------- Shell ---------- */
+.mandala .shell { display: flex; min-height: 100vh; background: var(--bg); }
+.mandala .rail { width: 64px; flex: none; display: flex; flex-direction: column; align-items: center; gap: 18px; padding: 16px 0; background: var(--panel); border-right: 1px solid var(--line); position: sticky; top: 0; height: 100vh; }
+.mandala .logo { width: 32px; height: 32px; border-radius: 8px; background: #222; color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 14px; }
+.mandala .rail-new { width: 36px; height: 36px; border-radius: 8px; border: 0; background: var(--accent); color: #fff; font-size: 20px; cursor: pointer; }
+.mandala .rail-icon { color: var(--ink-3); display: grid; place-items: center; width: 36px; height: 36px; border-radius: 8px; }
+.mandala .rail-icon:hover { background: var(--chip); color: var(--ink-2); }
+.mandala .rail-icon.on { color: var(--accent); }
+
+.mandala .sidebar { width: 232px; flex: none; background: var(--panel); border-right: 1px solid var(--line); padding: 20px 16px; display: flex; flex-direction: column; gap: 4px; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+.mandala .side-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: var(--ink-3); margin: 0 0 8px; text-transform: uppercase; }
+.mandala .side-link { display: flex; justify-content: space-between; align-items: center; padding: 9px 12px; border-radius: 6px; text-decoration: none; font-size: 14px; color: var(--ink-2); font-weight: 500; }
+.mandala .side-link:hover { background: #f7f7f9; color: var(--ink); }
+.mandala .side-link.on { background: var(--accent-soft); color: var(--ink); font-weight: 600; }
+.mandala .count { font-size: 12px; padding: 1px 8px; border-radius: 10px; background: var(--chip); color: var(--ink-2); font-weight: 500; }
+.mandala .side-link.on .count { background: #fff; }
+.mandala .side-stats { font-size: 13px; color: var(--ink-2); line-height: 1.75; padding: 0 12px; }
+.mandala .side-stats b { color: var(--ink); }
+.mandala .side-stats .warn { color: var(--red-fg); font-weight: 700; }
+.mandala .side-foot { margin-top: auto; font-size: 12px; color: var(--ink-3); line-height: 1.5; padding: 0 12px; }
+
+.mandala .main { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
+.mandala .topbar { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; padding: 14px 28px; background: var(--panel); border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 5; }
+.mandala .crumb { font-size: 14px; font-weight: 600; white-space: nowrap; }
+.mandala .crumb span { color: var(--ink-3); font-weight: 400; }
+.mandala .global-search { flex: 1 1 320px; max-width: 520px; display: flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 20px; background: var(--chip); color: var(--ink-3); font-size: 13px; }
+.mandala .global-search input { flex: 1; border: 0; background: transparent; outline: none; color: var(--ink); min-width: 0; }
+.mandala .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.mandala .avatar { width: 36px; height: 36px; border-radius: 50%; background: #222; color: #fff; font-size: 12px; font-weight: 700; display: grid; place-items: center; }
+
+/* ---------- Page ---------- */
+.mandala .page { padding: 24px 28px 32px; display: flex; flex-direction: column; gap: 18px; }
+.mandala .page-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.mandala .page-title { margin: 0; font-family: var(--serif); font-weight: 600; font-size: 28px; }
+.mandala .btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 14px; border-radius: 6px; border: 1px solid var(--line-2); background: #fff; font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none; color: var(--ink); white-space: nowrap; }
+.mandala .btn:hover { background: #fafafa; color: var(--ink); }
+.mandala .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.mandala .btn-primary:hover { background: var(--accent-hover); color: #fff; }
+.mandala .btn .caret { font-size: 9px; }
+.mandala .btn.active { border-color: var(--accent); color: var(--accent); }
+
+.mandala .tabs { display: flex; align-items: flex-end; gap: 4px; border-bottom: 1px solid var(--line-2); flex-wrap: wrap; }
+.mandala .tab { border: 0; background: none; padding: 8px 2px 10px; margin-right: 18px; font-size: 14px; color: var(--ink-2); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; display: inline-flex; gap: 6px; align-items: center; }
+.mandala .tab:hover { color: var(--ink); }
+.mandala .tab.on { color: var(--ink); font-weight: 600; border-bottom-color: var(--accent); }
+.mandala .tab .n-amber { color: #b7791f; font-weight: 600; }
+.mandala .tab-x { color: var(--ink-3); font-size: 12px; padding: 0 2px; }
+.mandala .tab-x:hover { color: var(--red-fg); }
+.mandala .tabs-right { margin-left: auto; padding-bottom: 8px; }
+.mandala .linkish { border: 0; background: none; font-size: 13px; color: var(--ink-2); cursor: pointer; padding: 0; }
+.mandala .linkish:hover { color: var(--ink); text-decoration: underline; }
+
+.mandala .filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.mandala .field { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border: 1px solid var(--line-2); border-radius: 6px; background: #fff; width: 240px; font-size: 13px; color: var(--ink-3); }
+.mandala .field input { border: 0; outline: none; flex: 1; min-width: 0; background: transparent; color: var(--ink); }
+.mandala .spacer { flex: 1; }
+
+/* Popover menus */
+.mandala .pop { position: relative; }
+.mandala .menu { position: absolute; top: calc(100% + 6px); left: 0; z-index: 20; min-width: 210px; background: #fff; border: 1px solid var(--line-2); border-radius: 8px; box-shadow: 0 8px 28px rgba(20, 20, 40, 0.12); padding: 6px; }
+.mandala .menu.right { left: auto; right: 0; }
+.mandala .menu-item { display: flex; align-items: center; gap: 8px; width: 100%; padding: 7px 10px; border: 0; background: none; border-radius: 5px; font-size: 13px; text-align: left; cursor: pointer; }
+.mandala .menu-item:hover { background: var(--chip); }
+.mandala .menu-item input { accent-color: var(--accent); margin: 0; }
+.mandala .menu-sep { height: 1px; background: var(--line); margin: 6px 0; }
+.mandala .menu-head { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); padding: 6px 10px 4px; }
+.mandala .menu-foot { display: flex; justify-content: space-between; padding: 6px 10px 2px; }
+
+/* Tables */
+.mandala .table-wrap { background: #fff; border: 1px solid var(--line); border-radius: 8px; overflow-x: auto; }
+.mandala table { width: 100%; border-collapse: collapse; }
+.mandala th { font-weight: 600; font-size: 12px; color: var(--ink-2); text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line-2); white-space: nowrap; background: var(--chip); }
+.mandala th.num, .mandala td.num { text-align: right; }
+.mandala th button { border: 0; background: none; padding: 0; font: inherit; color: inherit; cursor: pointer; display: inline-flex; gap: 4px; align-items: center; }
+.mandala th button:hover { color: var(--ink); }
+.mandala th .sort { color: var(--ink-3); font-size: 11px; }
+.mandala th .sort.on { color: var(--accent); }
+.mandala td { font-size: 13px; padding: 12px; border-bottom: 1px solid var(--row-line); vertical-align: middle; }
+.mandala tbody tr:last-child td { border-bottom: 0; }
+.mandala tbody tr:hover td { background: #fafbff; }
+.mandala .compact td { padding-top: 7px; padding-bottom: 7px; }
+.mandala td.strong { font-weight: 600; }
+.mandala td a.row-link { color: var(--ink); text-decoration: none; font-weight: 600; }
+.mandala td a.row-link:hover { color: var(--accent); text-decoration: underline; }
+.mandala .muted { color: var(--ink-3); }
+.mandala .query { color: var(--ink-2); max-width: 280px; line-height: 1.4; }
+.mandala .edits { display: inline-flex; flex-direction: column; align-items: flex-end; line-height: 1.25; }
+.mandala .edits small { color: var(--ink-3); font-size: 11px; }
+.mandala .empty { padding: 36px 16px; text-align: center; color: var(--ink-2); font-size: 14px; }
+
+.mandala .pill { display: inline-block; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 10px; white-space: nowrap; }
+.mandala .pill-blue { background: var(--blue-bg); color: var(--blue-fg); }
+.mandala .pill-amber { background: var(--amber-bg); color: var(--amber-fg); }
+.mandala .pill-green { background: var(--green-bg); color: var(--green-fg); }
+.mandala .pill-red { background: var(--red-bg); color: var(--red-fg); }
+.mandala .pill-grey { background: var(--chip); color: var(--ink-2); }
+
+.mandala .foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--ink-3); }
+.mandala .banner { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; padding: 12px 16px; border-radius: 8px; background: var(--accent-soft); color: var(--ink); font-size: 13px; }
+.mandala .chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.mandala .chip { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; padding: 4px 10px; border-radius: 6px; background: var(--chip); color: var(--ink-2); }
+.mandala .chip button { border: 0; background: none; padding: 0; cursor: pointer; color: var(--ink-3); }
+.mandala .inline-input { padding: 6px 10px; border: 1px solid var(--accent); border-radius: 6px; font-size: 13px; outline: none; width: 160px; }
+.mandala .view-select { display: none; }
+
+@media (max-width: 900px) {
+  .mandala .sidebar { display: none; }
+  .mandala .view-select { display: block; padding: 8px 10px; border: 1px solid var(--line-2); border-radius: 6px; background: #fff; font-size: 13px; }
+  .mandala .topbar { padding: 12px 16px; }
+  .mandala .page { padding: 18px 16px 28px; }
+  .mandala .crumb span { display: none; }
+}
+@media (max-width: 560px) {
+  .mandala .rail { display: none; }
+  .mandala .field { width: 100%; }
+  .mandala .page-title { font-size: 24px; }
+}
