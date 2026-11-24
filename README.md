@@ -82,9 +82,19 @@ The first Mandala screen. Open http://localhost:3000/campaigns after `npm run de
 - Sidebar views: Campaigns, Drafts, Segments, Templates (EN / JP), Approvals (`?view=` in the URL). The Audience block (contacts in sync, share with consent and country, duplicates to merge) and each segment's "eligible now" count are read live from the Contact table.
 - Tabs All campaigns / Awaiting approval / Sent, plus "+ Add view" to save the current filters as a tab.
 - Filters for send date, region and status, a table search, sortable columns, and Manage table to hide columns. The header search also matches campaigns; when nothing matches it offers to build a new list from that text.
-- Campaign rows link to `/campaigns/<id>` and "+ New campaign" to `/campaigns/new`. Both are for B2 (campaign builder), which is not built yet.
 - Campaigns themselves are sample rows in `src/lib/campaigns.ts` because there is no Campaign table yet.
+- Campaign rows open B2 (below); statuses changed there (approved, sent to Marketo) show up in this list.
 - Shared pieces other screens can reuse: `src/components/AppShell.tsx` (app rail, sidebar, header) and `src/components/Pill.tsx` (status pills). The B1 styles are scoped under `.mandala` in `src/app/campaigns/campaigns.css`, so the data browser styles are unchanged.
+
+### B2 · Campaign builder (`/campaigns/<id>`, `/campaigns/new`)
+
+The four-step builder from the wireframe. Open a campaign row on B1, or use "+ New campaign".
+
+- **Audience.** The plain-language query turns into filter chips (`src/lib/audience.ts`). "Rebuild list" and removing a chip re-run the filters against Account and Contact through a server action (`src/app/campaigns/actions.ts`). Consent and country are always required. Duplicates, missing consent and missing country are counted and excluded.
+- **Segments.** One per region with its rule, live contact count and template. Top 40 publishers by revenue are tagged and pre-set to Removed for 1:1 outreach.
+- **Drafts.** One per segment (EN, or JP for Japan). Subject, preview and body are editable in place and kept per segment. Regenerate cycles variants, and Show EN source sits next to the JP draft (`src/lib/drafts.ts`).
+- **Revenue approval.** Kept / Removed / Changed with a reason for every contact, plus the edit rate vs. the last campaign. Submit, then Request changes or Approve. "Send to Marketo as draft" only unlocks after approval (one of the open questions; the prototype answers "only after"). Everything is logged on the History tab.
+- Builder progress is saved in the viewer's browser (`src/lib/campaignState.ts`) until there is a Campaign table. "Reset demo" restores the sample state.
 
 ## Data model
 

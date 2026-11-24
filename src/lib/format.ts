@@ -8,3 +8,9 @@ export function shortDate(iso: string | Date): string {
 
 /** 38420 -> "38,420" */
 export const num = (n: number) => n.toLocaleString('en-US');
+
+/** "Nov 20, 2026" */
+export function longDate(iso: string | Date): string {
+  const d = new Date(iso);
+  return `${MONTHS[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+}

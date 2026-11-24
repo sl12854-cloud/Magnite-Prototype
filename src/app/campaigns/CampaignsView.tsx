@@ -7,6 +7,7 @@ import { AppShell } from '@/components/AppShell';
 import { Pill } from '@/components/Pill';
 import { REGIONS, REGION_NAMES, type Campaign, type CampaignStatus } from '@/lib/campaigns';
 import { num, shortDate } from '@/lib/format';
+import { loadStatuses } from '@/lib/campaignState';
 
 export type ViewKey = 'campaigns' | 'drafts' | 'segments' | 'templates' | 'approvals';
 export type AudienceHealth = { total: number; eligiblePct: number; duplicates: number; eligibleByRegion: Record<string, number> };
@@ -62,8 +63,15 @@ function inSendRange(c: Campaign, r: SendRange) {
 }
 
 export function CampaignsView(props: { campaigns: Campaign[]; templates: Template[]; health: AudienceHealth; initialView: ViewKey; initialQuery: string }) {
-  const { campaigns, templates, health } = props;
+  const { templates, health } = props;
   const router = useRouter();
+  // Statuses changed in the B2 builder (approve, send to Marketo) are saved per viewer.
+  const [overrides, setOverrides] = useState<Record<string, string>>({});
+  useEffect(() => setOverrides(loadStatuses(props.campaigns.map((c) => c.id))), [props.campaigns]);
+  const campaigns = useMemo(
+    () => props.campaigns.map((c) => (overrides[c.id] ? { ...c, status: overrides[c.id] as CampaignStatus } : c)),
+    [props.campaigns, overrides],
+  );
   const [view, setView] = useState<ViewKey>(props.initialView);
   const [globalQ, setGlobalQ] = useState(props.initialQuery);
   const [tableQ, setTableQ] = useState('');

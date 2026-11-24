@@ -6,7 +6,8 @@ export type CampaignStatus = 'Draft' | 'Awaiting approval' | 'Approved' | 'Sent'
 export type Campaign = {
   id: string;
   name: string;
-  query: string; // plain-language audience
+  query: string; // plain-language audience, as shown in the B1 list
+  fullQuery?: string; // longer version the B2 builder starts from
   regions: string[]; // NA | EMEA | APAC | JP
   segmentLabel?: string; // overrides "NA / EMEA" display, e.g. "by region"
   contacts: number;
@@ -19,7 +20,7 @@ export type Campaign = {
 };
 
 export const CAMPAIGNS: Campaign[] = [
-  { id: 'link-upsell-nov', name: 'Magnite Link upsell · Nov', query: 'Publishers not using Magnite Link, active in Streaming in the last 90 days', regions: ['NA', 'EMEA', 'JP'], contacts: 1240, edits: 18, opened: null, clicked: null, send: '2026-11-20', status: 'Awaiting approval', owner: 'Melissa Hillard' },
+  { id: 'link-upsell-nov', name: 'Magnite Link upsell · Nov', query: 'Publishers not using Magnite Link, active in Streaming in the last 90 days', fullQuery: 'Publishers not using Magnite Link, active in Streaming in the last 90 days, exclude anyone contacted in the last 14 days', regions: ['NA', 'EMEA', 'JP'], contacts: 1240, edits: 18, opened: null, clicked: null, send: '2026-11-20', status: 'Awaiting approval', owner: 'Melissa Hillard' },
   { id: 'dsp-onboarding-q4', name: 'DSP onboarding: Q4 partners', query: 'Demand accounts signed since Oct 1 with a DV+ seat', regions: ['NA', 'EMEA'], contacts: 312, edits: 6, opened: null, clicked: null, send: '2026-11-26', status: 'Awaiting approval', owner: 'Melissa Hillard' },
   { id: 'springserve-fee', name: 'SpringServe fee change notice', query: 'All SpringServe seat admins', regions: ['NA', 'EMEA', 'APAC', 'JP'], segmentLabel: 'by region', contacts: 2860, edits: 41, opened: null, clicked: null, send: '2026-11-30', status: 'Approved', owner: 'Omar Haddad' },
   { id: 'curation-21', name: 'Product update: Curation 2.1', query: 'ClearLine buyers who logged in during the last 60 days', regions: ['NA', 'JP'], contacts: 1975, edits: 23, opened: 31, clicked: 9, send: '2026-11-05', status: 'Sent', owner: 'Grace Lin' },
@@ -43,3 +44,18 @@ export const TEMPLATES = [
 
 export const REGIONS = ['NA', 'EMEA', 'APAC', 'JP'] as const;
 export const REGION_NAMES: Record<string, string> = { NA: 'North America', EMEA: 'EMEA', APAC: 'APAC', JP: 'Japan' };
+
+/** Reviewer for every campaign in the prototype. */
+export const REVIEWER = 'Zach Pucci (revenue)';
+
+/** Reviewer decisions already made on the sample campaign, keyed by contact email (B2 step 4). */
+export const SAMPLE_REVIEWS: Record<string, Record<string, { action: 'Removed' | 'Changed' | 'Kept'; reason: string }>> = {
+  'link-upsell-nov': {
+    'h.sato@meridianplus.jp': { action: 'Removed', reason: 'Already in a renewal conversation' },
+    'tech@orchardtv.com': { action: 'Changed', reason: 'Wrong contact; swapped to ad ops lead' },
+    'priya@sundialapps.co.uk': { action: 'Removed', reason: 'Contract in termination' },
+  },
+};
+
+/** Edit rate on the previous comparable campaign, shown in the approval footer. */
+export const LAST_EDIT_RATE = 4.2;

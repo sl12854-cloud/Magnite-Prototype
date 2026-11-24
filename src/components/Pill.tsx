@@ -8,6 +8,8 @@ const TONE: Record<string, 'blue' | 'amber' | 'green' | 'red' | 'grey'> = {
   Closed: 'green',
   Sent: 'green',
   'Needs review': 'red',
+  'Changes requested': 'red',
+  'In Marketo (draft)': 'green',
 };
 
 /** Status pill. Blue = new/approved, amber = in progress/awaiting, green = closed/sent, red = needs review. */

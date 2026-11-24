@@ -16,17 +16,17 @@ const APPS: { key: AppKey; label: string; href: string }[] = [
   { key: 'cases', label: 'Case Router', href: '/cases' },
   { key: 'people', label: 'Accounts', href: '/tables/accounts' },
   { key: 'campaigns', label: 'Client Comms', href: '/campaigns' },
-  { key: 'reports', label: 'Routing performance', href: '/cases/performance' },
+  { key: 'reports', label: 'Routing performance', href: '/routing-performance' },
 ];
 
 /**
- * Shared Mandala shell: 64px app rail, 232px sidebar, header with breadcrumb + search.
+ * Shared Mandala shell: 64px app rail, optional 232px sidebar, header with breadcrumb + search.
  * Each page passes its own sidebar, breadcrumb and search box.
  */
 export function AppShell(props: {
   active: AppKey;
   crumb: string;
-  sidebar: ReactNode;
+  sidebar?: ReactNode;
   search: ReactNode;
   avatar: string;
   children: ReactNode;
@@ -42,7 +42,7 @@ export function AppShell(props: {
           </Link>
         ))}
       </nav>
-      <aside className="sidebar">{props.sidebar}</aside>
+      {props.sidebar && <aside className="sidebar">{props.sidebar}</aside>}
       <main className="main">
         <header className="topbar">
           <div className="crumb">Magnite <span>/ Mandala / {props.crumb}</span></div>
