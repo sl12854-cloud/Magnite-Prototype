@@ -1,4 +1,5 @@
-# Deploys main to Vercel production on every push.
+# Deploys main to Vercel production when run by hand from the Actions tab
+# (Run workflow). Switch `on:` back to a push trigger once the secrets exist.
 #
 # Used instead of Vercel's GitHub integration because the repo lives in a
 # personal account that the Vercel team cannot connect to. Needs three
@@ -14,8 +15,6 @@
 name: Deploy to Vercel
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 concurrency:
