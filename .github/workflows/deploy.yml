@@ -1,0 +1,63 @@
+# Deploys main to Vercel production on every push.
+#
+# Used instead of Vercel's GitHub integration because the repo lives in a
+# personal account that the Vercel team cannot connect to. Needs three
+# repository secrets (Settings > Secrets and variables > Actions):
+#
+#   VERCEL_TOKEN       a token from https://vercel.com/account/tokens,
+#                      scoped to the Magnite team
+#   VERCEL_ORG_ID      "orgId" from .vercel/project.json in a linked checkout
+#   VERCEL_PROJECT_ID  "projectId" from the same file
+#
+# The database connection strings are NOT needed here. They live in the
+# Vercel project and are injected at build and run time on Vercel.
+name: Deploy to Vercel
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: vercel-production
+  cancel-in-progress: false
+
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+jobs:
+  check:
+    name: Typecheck and test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci # postinstall runs prisma generate; no database needed
+      - run: npm run typecheck
+      - run: npm test
+
+  deploy:
+    name: Deploy production
+    needs: check
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: ${{ steps.deploy.outputs.url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --global vercel@latest
+      - name: Deploy
+        id: deploy
+        run: |
+          url=$(vercel deploy --prod --yes --token "$VERCEL_TOKEN")
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          echo "Deployed $url"
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
