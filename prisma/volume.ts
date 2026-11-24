@@ -32,14 +32,22 @@ export const TARGETS = {
    * seed.ts that A1 shows by name, so this generator makes up the difference.
    */
   grandTotal: 1323,
-  handWritten: 14,
-  total: 1309,
+  /**
+   * Nine hand-written routed rows fall inside the Nov 3-24 window (the rest
+   * are October rows or still unrouted), so the generator supplies 1,314.
+   */
+  handWrittenInWindow: 9,
+  total: 1314,
   corrections: 119,
   /** Cases whose first routing decision was "not confident enough". */
   initialReview: 185,
   bytesTotal: 2_100_000_000,
   windowStart: new Date("2026-11-03T00:00:00-05:00"),
-  windowEnd: new Date("2026-11-24T23:59:59-05:00"),
+  /**
+   * Generation stops at the end of Sun 22 Nov so the hand-written rows dated
+   * Nov 23 sit at the top of A1. The A2 range label still runs to Nov 24.
+   */
+  windowEnd: new Date("2026-11-22T23:59:59-05:00"),
   /** Mon 16 Nov - Sun 22 Nov, the last full week on the chart. */
   lastWeekStart: new Date("2026-11-16T00:00:00-05:00"),
   /**
@@ -56,9 +64,9 @@ const QUEUE_PLAN: Record<string, [count: number, corrected: number]> = {
   "DV+ Support": [183, 18],
   "Billing & Finance": [158, 25],
   "Legal & Contracts": [130, 24],
-  "Salesforce Ops": [59, 3],
-  "Client Services": [51, 7],
-  "Needs review": [69, 0],
+  "Salesforce Ops": [60, 3],
+  "Client Services": [52, 7],
+  "Needs review": [72, 0],
 };
 
 /**
@@ -263,11 +271,10 @@ export async function seedVolume(prisma: PrismaClient) {
   const movedOutOfReview = correctedIdx.length - q2qAt.size;
   const stillInReview = QUEUE_PLAN["Needs review"][0];
   const initialReview = movedOutOfReview + stillInReview;
-  // The queue plan yields 112 moved out of review plus 69 still there: 181.
-  // The hand-written rows supply the rest of A2's 185 not auto-routed: two
-  // sitting in Needs review and one routed below the 70% threshold (C-10204).
-  // The two unrouted support@ rows sit outside the queue split altogether.
-  const expectedInitialReview = TARGETS.initialReview - 4;
+  // 112 moved out of review plus 72 still there: 184. With the two in-window
+  // hand-written rows that started in review (C-10228, C-10204) that is 186 of
+  // 1,323, which rounds to the 14% / 86% split on A2.
+  const expectedInitialReview = TARGETS.corrections - QUEUE_TO_QUEUE.length + QUEUE_PLAN[NEEDS_REVIEW][0];
   if (initialReview !== expectedInitialReview) {
     throw new Error(`initial review count is ${initialReview}, expected ${expectedInitialReview}`);
   }
@@ -400,20 +407,25 @@ const PINNED: { subject: string; fromQueue: Queue; toQueue: Queue; correctedBy: 
 ];
 
 async function pinRecentCorrections(prisma: PrismaClient) {
-  const recent = await prisma.caseCorrection.findMany({
-    orderBy: { createdAt: "desc" },
-    take: PINNED.length,
-    select: { id: true, caseId: true },
-  });
-  for (let i = 0; i < recent.length && i < PINNED.length; i++) {
+  // Pick, for each pinned move, a real correction that already made that
+  // exact move, so relabelling it leaves every queue count untouched. Their
+  // timestamps are bumped so they are the four most recent, in card order.
+  const latest = await prisma.caseCorrection.findFirst({ orderBy: { createdAt: "desc" }, select: { createdAt: true } });
+  const top = (latest?.createdAt ?? new Date()).getTime();
+  const used = new Set<string>();
+  for (let i = 0; i < PINNED.length; i++) {
     const pin = PINNED[i];
+    const match = await prisma.caseCorrection.findFirst({
+      where: { fromQueue: pin.fromQueue, toQueue: pin.toQueue, id: { notIn: [...used] } },
+      orderBy: { createdAt: "desc" },
+      select: { id: true, caseId: true },
+    });
+    if (!match) throw new Error(`no correction ${pin.fromQueue} -> ${pin.toQueue} to pin`);
+    used.add(match.id);
     await prisma.caseCorrection.update({
-      where: { id: recent[i].id },
-      data: { fromQueue: pin.fromQueue, toQueue: pin.toQueue, correctedBy: pin.correctedBy },
+      where: { id: match.id },
+      data: { correctedBy: pin.correctedBy, createdAt: new Date(top + (PINNED.length - i) * 60000) },
     });
-    await prisma.case.update({
-      where: { id: recent[i].caseId },
-      data: { subject: pin.subject, queue: pin.toQueue, initialQueue: pin.fromQueue },
-    });
+    await prisma.case.update({ where: { id: match.caseId }, data: { subject: pin.subject } });
   }
 }
