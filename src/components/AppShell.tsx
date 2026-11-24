@@ -26,7 +26,8 @@ const APPS: { key: AppKey; label: string; href: string }[] = [
 export function AppShell(props: {
   active: AppKey;
   crumb: string;
-  sidebar: ReactNode;
+  /** Pass null for pages without a sidebar, like the campaign builder. */
+  sidebar: ReactNode | null;
   search: ReactNode;
   avatar: string;
   children: ReactNode;
@@ -42,7 +43,7 @@ export function AppShell(props: {
           </Link>
         ))}
       </nav>
-      <aside className="sidebar">{props.sidebar}</aside>
+      {props.sidebar != null && <aside className="sidebar">{props.sidebar}</aside>}
       <main className="main">
         <header className="topbar">
           <div className="crumb">Magnite <span>/ Mandala / {props.crumb}</span></div>
