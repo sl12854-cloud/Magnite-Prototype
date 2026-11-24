@@ -97,9 +97,17 @@ The Client Comms list screen, the first Prototype B screen. Open http://localhos
 - Sidebar views: Campaigns, Drafts, Segments, Templates (EN / JP), Approvals (`?view=` in the URL). The Audience block (contacts in sync, share with consent and country, duplicates to merge) and each segment's "eligible now" count are read live from the Contact table.
 - Tabs All campaigns / Awaiting approval / Sent, plus "+ Add view" to save the current filters as a tab.
 - Filters for send date, region and status, a table search, sortable columns, and Manage table to hide columns. The header search also matches campaigns; when nothing matches it offers to build a new list from that text.
-- Campaign rows link to `/campaigns/<id>` and "+ New campaign" to `/campaigns/new`. Both are for B2 (campaign builder), which is not built yet, so they 404 for now.
+- Campaign rows link to `/campaigns/<id>` and "+ New campaign" to `/campaigns/new`, which open the B2 builder below.
 - Campaigns themselves are sample rows in `src/lib/campaigns.ts` because there is no Campaign table yet.
 - Shared pieces other screens can reuse: `src/components/AppShell.tsx` (app rail, sidebar, header) and `src/components/Pill.tsx` (status pills). The B1 styles are scoped under `.mandala` in `src/app/campaigns/campaigns.css`, so the data browser styles are unchanged.
+
+### B2 · Campaign builder (`/campaigns/<id>`)
+
+The four-step builder for one campaign. `/campaigns/link-upsell-nov` is the wireframe campaign, written out verbatim in `src/lib/campaignDetail.ts`; every other id from the B1 list gets a derived state (segments by region, one draft per segment and language, review rows, step states by status). `/campaigns/new` is the empty builder and honours `?audience=` from the B1 search banner.
+
+- Draft chips switch between the JP draft and the two EN drafts; "Show EN source" toggles the JP draft to its English source.
+- "Approve list and drafts" flips the status to Approved and marks step 4 done; "Request changes" sends it back to the owner. Both are client-side only until there is a Campaign table.
+- The Performance and History tabs are placeholders.
 
 ### Deploying the app
 
@@ -137,7 +145,7 @@ prisma/
   seed/                wireframe fixtures and the generator for the six non-case tables
   volume.ts            case history behind wireframe A2
 src/
-  app/                 data browser (/), A1 case queue (/cases), A2 dashboard (/routing-performance), API routes
+  app/                 data browser (/), A1 case queue (/cases), A2 dashboard (/routing-performance), B1 campaigns (/campaigns), B2 builder (/campaigns/[id]), API routes
   lib/                 Prisma client, table registry, case router, email ingest, routing metrics
 wireframes/
   README.md              screen-by-screen notes and open questions
@@ -148,4 +156,4 @@ wireframes/
 
 ## Status
 
-Wireframes, a seeded Supabase database with a read-only browser, and Prototype A (case routing: screens A1 and A2, the case and metrics endpoints, and 21 tests via `npm test`). Prototype B has its B1 campaigns list at `/campaigns`; the B2 builder is not built yet. See [`wireframes/README.md`](wireframes/README.md) for the screen inventory and open questions.
+Wireframes, a seeded Supabase database with a read-only browser, and Prototype A (case routing: screens A1 and A2, the case and metrics endpoints, and 21 tests via `npm test`). Prototype B has its B1 campaigns list at `/campaigns` and the B2 builder at `/campaigns/<id>` and `/campaigns/new`. See [`wireframes/README.md`](wireframes/README.md) for the screen inventory and open questions.
