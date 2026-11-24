@@ -90,6 +90,17 @@ Other scripts: `db:push` applies schema changes without reseeding, `db:seed` rel
 
 **Resetting before a demo.** `npm run db:seed` wipes and reloads every table in about ten seconds. The data is deterministic, so the result is identical every time.
 
+### B1 · Campaigns (`/campaigns`)
+
+The Client Comms list screen, the first Prototype B screen. Open http://localhost:3000/campaigns after `npm run dev`.
+
+- Sidebar views: Campaigns, Drafts, Segments, Templates (EN / JP), Approvals (`?view=` in the URL). The Audience block (contacts in sync, share with consent and country, duplicates to merge) and each segment's "eligible now" count are read live from the Contact table.
+- Tabs All campaigns / Awaiting approval / Sent, plus "+ Add view" to save the current filters as a tab.
+- Filters for send date, region and status, a table search, sortable columns, and Manage table to hide columns. The header search also matches campaigns; when nothing matches it offers to build a new list from that text.
+- Campaign rows link to `/campaigns/<id>` and "+ New campaign" to `/campaigns/new`. Both are for B2 (campaign builder), which is not built yet, so they 404 for now.
+- Campaigns themselves are sample rows in `src/lib/campaigns.ts` because there is no Campaign table yet.
+- Shared pieces other screens can reuse: `src/components/AppShell.tsx` (app rail, sidebar, header) and `src/components/Pill.tsx` (status pills). The B1 styles are scoped under `.mandala` in `src/app/campaigns/campaigns.css`, so the data browser styles are unchanged.
+
 ### Deploying the app
 
 The database lives on Supabase and the app on Vercel, project `magnite-prototype`, which holds the same two environment variables. `npx vercel deploy --prod` from a linked checkout publishes the current working tree; the build runs `prisma generate` through the `postinstall` hook, so no extra build step is needed.
@@ -137,4 +148,4 @@ wireframes/
 
 ## Status
 
-Wireframes, a seeded Supabase database with a read-only browser, and Prototype A (case routing: screens A1 and A2, the case and metrics endpoints, and 21 tests via `npm test`). Prototype B is in progress on the `b1-campaigns` branch. See [`wireframes/README.md`](wireframes/README.md) for the screen inventory and open questions.
+Wireframes, a seeded Supabase database with a read-only browser, and Prototype A (case routing: screens A1 and A2, the case and metrics endpoints, and 21 tests via `npm test`). Prototype B has its B1 campaigns list at `/campaigns`; the B2 builder is not built yet. See [`wireframes/README.md`](wireframes/README.md) for the screen inventory and open questions.
